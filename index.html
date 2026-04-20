@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Medication Adherence for Young Adults with Diabetes</title>
+  <title>AdhereMed — Medication Adherence for Type 1 and Type 2 diabetes</title>
   <meta name="description" content="A cinematic guide to medication adherence for young adults with diabetes. Learn why consistency saves lives."/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
@@ -330,6 +330,16 @@
     /* Bento cards — GeneShield exact style */
     [data-theme="light"] .bc-soft{background:linear-gradient(145deg,#EFF8FF,#F0FDFA);border-color:#D6EAF5}
     [data-theme="light"] .bc-soft:hover{box-shadow:0 20px 60px rgba(14,165,233,0.1);border-color:rgba(14,165,233,0.2)}
+
+    /* ── TYPES IMAGE ROW ── */
+    .types-imgs{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:22px}
+    .types-img{grid-column:span 4;position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/3;background:linear-gradient(145deg,#EFF8FF,#F0FDFA);border:1px solid #D6EAF5;box-shadow:0 4px 28px rgba(14,165,233,.05);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
+    .types-img:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(14,165,233,.12);border-color:rgba(14,165,233,.2)}
+    .types-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+    .types-img:hover img{transform:scale(1.04)}
+    .types-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(5,13,26,.55) 100%);pointer-events:none}
+    .types-img-cap{position:absolute;left:18px;right:18px;bottom:16px;z-index:2;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#fff;opacity:.95}
+    @media (max-width:900px){.types-img{grid-column:span 1}.types-imgs{grid-template-columns:1fr}}
     [data-theme="light"] .bc-white{background:rgba(255,255,255,0.85);backdrop-filter:blur(16px);border-color:#E2E8F0}
     [data-theme="light"] .bc-white:hover{box-shadow:0 20px 60px rgba(14,165,233,0.08);border-color:rgba(14,165,233,0.15)}
     [data-theme="light"] .bc-navy{background:#0F2137;color:#fff}
@@ -500,11 +510,11 @@
 
   <div class="hero-content">
     <div class="hero-tag">
-      <div class="hero-tag-dot" aria-hidden="true">💊</div>
+      <div class="hero-tag-dot" aria-hidden="true"></div>
       <span>Medication Adherence — Young Adults &amp; Diabetes</span>
     </div>
     <h1><i class="shimmer">Take Your Meds.</i><br>Stay <span id="typed-hero" class="typed-text"></span></h1>
-    <p class="hero-desc">One pill a day keeps the crisis away. A simple guide to medication adherence for young adults living with diabetes.</p>
+    <p class="hero-desc">One pill a day keeps the crisis away. A simple guide to medication adherence for type 1 and type 2 diabetes.</p>
     <div class="hero-actions">
       <a href="#importance" class="btn btn-primary" aria-label="Learn why adherence matters">
         Why It Matters
@@ -551,27 +561,27 @@
       <div class="bento-grid">
         <div class="bc bc-7 bc-soft rv">
           <div class="bc-deco bc-deco-c" style="color:var(--c1)" aria-hidden="true"></div>
-          <div class="bc-icon bci-1" aria-hidden="true">🩺</div>
+          <div class="bc-icon bci-1" aria-hidden="true"></div>
           <span class="bc-ol">The Condition</span>
           <div class="bc-t">What happens in your body</div>
           <div class="bc-desc">Diabetes is a chronic condition where blood glucose (blood sugar) is persistently too high. It develops when the pancreas fails to produce enough insulin, produces none at all, or when the body doesn't respond properly to the insulin it does produce. Without insulin, cells cannot absorb glucose for energy — and blood sugar accumulates to dangerous levels.</div>
         </div>
         <div class="bc bc-5 bc-navy rv rv-d1">
           <div class="bc-deco bc-deco-d" style="color:#fff" aria-hidden="true"></div>
-          <div class="bc-icon bci-2" aria-hidden="true">📋</div>
+          <div class="bc-icon bci-2" aria-hidden="true"></div>
           <span class="bc-ol">Medication Adherence</span>
           <div class="bc-t">What it actually means</div>
           <div class="bc-desc">Medication adherence is the extent to which your medication-taking behaviour matches agreed recommendations from your healthcare provider. Right time. Right dose. Right instructions. Right duration — even when you feel completely fine.</div>
         </div>
         <div class="bc bc-4 bc-grad rv rv-d2">
-          <div class="bc-icon" style="background:rgba(255,255,255,.18);color:#fff;font-size:1.4rem" aria-hidden="true">📊</div>
+          <div class="bc-icon" style="background:rgba(255,255,255,.18);color:#fff;font-size:1.4rem" aria-hidden="true"></div>
           <span class="bc-ol" style="color:rgba(255,255,255,.65)">Global Scale</span>
           <div class="bc-t" style="color:#fff">422 Million</div>
           <div class="bc-desc" style="color:rgba(255,255,255,.8)">People worldwide living with diabetes as of 2022 — with numbers rising every year (WHO).</div>
         </div>
         <div class="bc bc-8 bc-white rv rv-d3">
           <div class="bc-deco bc-deco-c" style="color:var(--c3)" aria-hidden="true"></div>
-          <div class="bc-icon bci-4" aria-hidden="true">💡</div>
+          <div class="bc-icon bci-4" aria-hidden="true"></div>
           <span class="bc-ol">The Core Truth</span>
           <div class="bc-t">Feeling fine doesn't mean cured</div>
           <div class="bc-desc">One of the most dangerous misconceptions — especially among young adults — is stopping medication when you feel well. That feeling is often proof the medication is working. Stopping disrupts glucose control and can trigger rapid, life-threatening complications. Consistent adherence is what keeps you well.</div>
@@ -590,23 +600,37 @@
       </div>
       <div class="bento-grid">
         <div class="bc bc-4 bc-soft rv">
-          <div class="bc-icon bci-1" aria-hidden="true">🛡️</div>
+          <div class="bc-icon bci-1" aria-hidden="true"></div>
           <span class="bc-ol">Type 01</span>
           <div class="bc-t">Type 1 Diabetes</div>
           <div class="bc-desc">An autoimmune disease where the immune system attacks and destroys insulin-producing beta cells in the pancreas. Produces little or no insulin. Requires lifelong insulin therapy to survive. Not caused by diet or lifestyle.</div>
         </div>
         <div class="bc bc-4 bc-soft rv rv-d1">
-          <div class="bc-icon bci-2" aria-hidden="true">⚖️</div>
+          <div class="bc-icon bci-2" aria-hidden="true"></div>
           <span class="bc-ol">Type 02</span>
           <div class="bc-t">Type 2 Diabetes</div>
           <div class="bc-desc">The most common form. The body doesn't produce enough insulin or can't use it effectively (insulin resistance). Strongly linked to lifestyle factors though genetics play a role. Managed through oral medication, insulin, or both.</div>
         </div>
         <div class="bc bc-4 bc-soft rv rv-d2">
-          <div class="bc-icon bci-4" aria-hidden="true">🤰</div>
+          <div class="bc-icon bci-4" aria-hidden="true"></div>
           <span class="bc-ol">Type 03</span>
           <div class="bc-t">Gestational Diabetes</div>
           <div class="bc-desc">Occurs during pregnancy when placental hormones cause insulin resistance. Usually resolves after birth but significantly raises the mother's lifetime risk of developing Type 2 diabetes. Requires careful monitoring.</div>
         </div>
+      </div>
+      <div class="types-imgs rv">
+        <figure class="types-img">
+          <img src="images/type-1-diabetes.jpeg" alt="Illustration showing insulin-producing cells being destroyed in Type 1 diabetes"/>
+          <figcaption class="types-img-cap">Type 01 — Autoimmune Response</figcaption>
+        </figure>
+        <figure class="types-img rv-d1">
+          <img src="images/type-2-diabetes.jpeg" alt="Waistline being measured, representing lifestyle factors associated with Type 2 diabetes"/>
+          <figcaption class="types-img-cap">Type 02 — Insulin Resistance</figcaption>
+        </figure>
+        <figure class="types-img rv-d2">
+          <img src="images/gestational.jpeg" alt="Person administering an insulin injection, representing treatment during gestational diabetes"/>
+          <figcaption class="types-img-cap">Gestational Diabetes</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -629,44 +653,44 @@
     </div>
     <div class="comp-grid rv">
       <div class="dbc">
-        <span class="dbc-icon" aria-hidden="true">❤️</span>
+        <span class="dbc-icon" aria-hidden="true"></span>
         <span class="dbc-n">Complication 01</span>
         <div class="dbc-t">Cardiovascular Disease</div>
         <div class="dbc-d">High blood glucose damages artery walls, raising risk of heart attack, stroke, and peripheral artery disease. The leading cause of death among people with diabetes globally.</div>
       </div>
       <div class="dbc">
-        <span class="dbc-icon" aria-hidden="true">🫘</span>
+        <span class="dbc-icon" aria-hidden="true"></span>
         <span class="dbc-n">Complication 02</span>
         <div class="dbc-t">Kidney Damage</div>
         <div class="dbc-d">Chronic hyperglycaemia damages the kidney's filtering vessels, progressively reducing function. Can advance to kidney failure requiring dialysis or transplant.</div>
       </div>
       <div class="dbc">
-        <span class="dbc-icon" aria-hidden="true">👁️</span>
+        <span class="dbc-icon" aria-hidden="true"></span>
         <span class="dbc-n">Complication 03</span>
         <div class="dbc-t">Retinopathy</div>
         <div class="dbc-d">Weakened retinal blood vessels cause blurred vision and can lead to permanent blindness. Diabetes is one of the world's leading causes of preventable blindness.</div>
       </div>
       <div class="dbc">
-        <span class="dbc-icon" aria-hidden="true">⚡</span>
+        <span class="dbc-icon" aria-hidden="true"></span>
         <span class="dbc-n">Complication 04</span>
         <div class="dbc-t">Nerve Damage</div>
         <div class="dbc-d">Tingling, numbness, or burning pain usually starting in hands and feet. Severe cases cause complete loss of sensation, dramatically raising the risk of undetected injury.</div>
       </div>
       <div class="dbc">
-        <span class="dbc-icon" aria-hidden="true">🧠</span>
+        <span class="dbc-icon" aria-hidden="true"></span>
         <span class="dbc-n">Complication 05</span>
         <div class="dbc-t">Cognitive Decline</div>
         <div class="dbc-d">Long-term poor glycaemic control is linked to accelerated cognitive decline and increased dementia risk — effects that appear even in young adults with persistent hyperglycaemia.</div>
       </div>
       <div class="dbc">
-        <span class="dbc-icon" aria-hidden="true">🦶</span>
+        <span class="dbc-icon" aria-hidden="true"></span>
         <span class="dbc-n">Complication 06</span>
         <div class="dbc-t">Foot Damage & Amputation</div>
         <div class="dbc-d">Combined nerve damage and poor circulation cause ulcers that heal slowly. Diabetes causes the majority of non-traumatic lower limb amputations performed worldwide every year.</div>
       </div>
     </div>
     <div class="dka-callout rv" style="margin-top:18px">
-      <div class="dka-icon" aria-hidden="true">🚨</div>
+      <div class="dka-icon" aria-hidden="true"></div>
       <div>
         <div class="dka-h">Acute Emergency: Diabetic Ketoacidosis (DKA)</div>
         <div class="dka-p">When the body lacks insulin, it burns fat for energy — producing ketones that dangerously acidify the blood. DKA is a life-threatening emergency requiring immediate hospitalisation. Symptoms: extreme thirst, vomiting, abdominal pain, confusion, and fruity-smelling breath. Poor adherence is a leading trigger.</div>
@@ -686,37 +710,37 @@
     </div>
     <div class="bento-grid">
       <div class="bc bc-6 bc-soft rv">
-        <div class="bc-icon bci-4" aria-hidden="true">📈</div>
+        <div class="bc-icon bci-4" aria-hidden="true"></div>
         <span class="bc-ol">Reason 01</span>
         <div class="bc-t">Maintains normal blood glucose</div>
         <div class="bc-desc">Consistent medication keeps levels stable in your bloodstream, preventing hypoglycaemia (dangerous lows causing dizziness and confusion) and chronic hyperglycaemia (damaging highs that destroy blood vessels and organs over time).</div>
       </div>
       <div class="bc bc-6 bc-white rv rv-d1">
-        <div class="bc-icon bci-1" aria-hidden="true">🛡️</div>
+        <div class="bc-icon bci-1" aria-hidden="true"></div>
         <span class="bc-ol">Reason 02</span>
         <div class="bc-t">Protects every blood vessel</div>
         <div class="bc-desc">Microvascular complications begin with weakened, leaking blood vessels. Adherence prevents this damage — protecting your eyes, kidneys, and nerves before irreversible harm occurs. Prevention is always better than treatment.</div>
       </div>
       <div class="bc bc-4 bc-grad rv rv-d2">
-        <div class="bc-icon" style="background:rgba(255,255,255,.18)" aria-hidden="true">🚑</div>
+        <div class="bc-icon" style="background:rgba(255,255,255,.18)" aria-hidden="true"></div>
         <span class="bc-ol" style="color:rgba(255,255,255,.65)">Reason 03</span>
         <div class="bc-t" style="color:#fff">Prevents emergencies</div>
         <div class="bc-desc" style="color:rgba(255,255,255,.82)">Poor adherence triggers sudden crises like DKA or Hyperosmolar Hyperglycaemic State — both life-threatening. Staying on track prevents these entirely.</div>
       </div>
       <div class="bc bc-4 bc-soft rv rv-d3">
-        <div class="bc-icon bci-3" aria-hidden="true">💸</div>
+        <div class="bc-icon bci-3" aria-hidden="true"></div>
         <span class="bc-ol">Reason 04</span>
         <div class="bc-t">Saves money long-term</div>
         <div class="bc-desc">The cost of treating complications — dialysis, eye surgery, amputations — far exceeds the cost of consistent medication. Adherence today is the most cost-effective health investment you can make.</div>
       </div>
       <div class="bc bc-4 bc-navy rv">
-        <div class="bc-icon bci-2" aria-hidden="true">🌟</div>
+        <div class="bc-icon bci-2" aria-hidden="true"></div>
         <span class="bc-ol">Reason 05</span>
         <div class="bc-t">Preserves quality of life</div>
         <div class="bc-desc">Good adherence keeps symptoms manageable so you can study, work, socialise, and exercise without your condition dominating every day. Control your diabetes — don't let it control you.</div>
       </div>
       <div class="bc bc-4 bc-soft rv rv-d1">
-        <div class="bc-icon bci-4" aria-hidden="true">⏳</div>
+        <div class="bc-icon bci-4" aria-hidden="true"></div>
         <span class="bc-ol">Reason 06</span>
         <div class="bc-t">Slows disease progression</div>
         <div class="bc-desc">Maintaining healthy HbA1c through adherence consistently slows or prevents progression from manageable diabetes to severe complications. The earlier you commit, the greater the long-term dividend.</div>
@@ -740,27 +764,27 @@
     </div>
     <div class="barrier-grid">
       <div class="bar-card rv">
-        <div class="bar-icon" aria-hidden="true">💸</div>
+        <div class="bar-icon" aria-hidden="true"></div>
         <div><div class="bar-t">Cost of Medication</div><div class="bar-d">Many patients can't afford long-term treatment, especially insulin and newer oral drugs. Financial pressure leads to skipped doses, dose reduction, or complete discontinuation — all of which are dangerous.</div></div>
       </div>
       <div class="bar-card rv rv-d1">
-        <div class="bar-icon" aria-hidden="true">📚</div>
+        <div class="bar-icon" aria-hidden="true"></div>
         <div><div class="bar-t">Poor Health Literacy</div><div class="bar-d">Patients who don't understand their condition may stop medication when symptoms improve — wrongly believing they are cured. Informed patients adhere significantly better than uninformed ones.</div></div>
       </div>
       <div class="bar-card rv rv-d2">
-        <div class="bar-icon" aria-hidden="true">📅</div>
+        <div class="bar-icon" aria-hidden="true"></div>
         <div><div class="bar-t">Complex Regimens &amp; Busy Schedules</div><div class="bar-d">Multiple medications at different times, exams, travel, and irregular routines all disrupt adherence patterns — particularly for students and young professionals navigating unpredictable days.</div></div>
       </div>
       <div class="bar-card rv rv-d3">
-        <div class="bar-icon" aria-hidden="true">😟</div>
+        <div class="bar-icon" aria-hidden="true"></div>
         <div><div class="bar-t">Side Effects &amp; Fear of Needles</div><div class="bar-d">Nausea, weight gain, and needle phobia are major deterrents. Psychological resistance to insulin therapy leads to poor glycaemic control and long delays before starting necessary treatment.</div></div>
       </div>
       <div class="bar-card rv">
-        <div class="bar-icon" aria-hidden="true">🍕</div>
+        <div class="bar-icon" aria-hidden="true"></div>
         <div><div class="bar-t">Social &amp; Dietary Pressure</div><div class="bar-d">Peers and family encourage indulgence. Cultural food norms, social events, and the desire to participate without restriction all create real friction for young adults managing dietary guidelines.</div></div>
       </div>
       <div class="bar-card rv rv-d1">
-        <div class="bar-icon" aria-hidden="true">🙈</div>
+        <div class="bar-icon" aria-hidden="true"></div>
         <div><div class="bar-t">Denial &amp; Short-term Thinking</div><div class="bar-d">Without visible consequences today, it's easy to deprioritise medication that protects future health. Some young adults don't fully accept their diagnosis or understand the long-term severity of the illness.</div></div>
       </div>
     </div>
@@ -781,7 +805,7 @@
         <div>
           <div class="strat-title">Understand your medication</div>
           <div class="strat-desc">Ask your nurse or doctor what each medication does, how it works, and what happens if you skip it. Patients who understand their treatment adhere significantly better than those who don't.</div>
-          <div class="strat-tip">💡 Write down your medication names, doses, and timing in your phone — and refer back until it's automatic.</div>
+          <div class="strat-tip"> Write down your medication names, doses, and timing in your phone — and refer back until it's automatic.</div>
         </div>
       </div>
       <div class="strat-row rv rv-d1" role="listitem">
@@ -789,7 +813,7 @@
         <div>
           <div class="strat-title">Set smart, recurring reminders</div>
           <div class="strat-desc">Set alarms at your exact medication times. Use a dedicated medication reminder app or ask a trusted family member to check in with you daily until the habit is solid.</div>
-          <div class="strat-tip">💡 <a href="https://www.medisafe.com" target="_blank" rel="noopener noreferrer">Medisafe</a>, Roundhealth, and MyTherapy are all free apps built specifically for this.</div>
+          <div class="strat-tip"> <a href="https://www.medisafe.com" target="_blank" rel="noopener noreferrer">Medisafe</a>, Roundhealth, and MyTherapy are all free apps built specifically for this.</div>
         </div>
       </div>
       <div class="strat-row rv rv-d2" role="listitem">
@@ -797,7 +821,7 @@
         <div>
           <div class="strat-title">Anchor it to an existing daily habit</div>
           <div class="strat-desc">Link your medication to something you already do every day — brushing teeth, morning coffee, or going to bed. The stronger the habit anchor, the less conscious effort adherence requires.</div>
-          <div class="strat-tip">💡 Place your medication next to your toothbrush or coffee maker as a physical cue you can't miss.</div>
+          <div class="strat-tip"> Place your medication next to your toothbrush or coffee maker as a physical cue you can't miss.</div>
         </div>
       </div>
       <div class="strat-row rv" role="listitem">
@@ -805,7 +829,7 @@
         <div>
           <div class="strat-title">Address side effects — don't just stop</div>
           <div class="strat-desc">If you experience side effects, tell your healthcare provider. Never simply stop taking the medication. There are often alternative formulations, dose adjustments, or complementary strategies that resolve the issue.</div>
-          <div class="strat-tip">💡 Keep a side-effect diary (date, symptom, severity) to share at your next appointment for targeted solutions.</div>
+          <div class="strat-tip"> Keep a side-effect diary (date, symptom, severity) to share at your next appointment for targeted solutions.</div>
         </div>
       </div>
       <div class="strat-row rv rv-d1" role="listitem">
@@ -813,7 +837,7 @@
         <div>
           <div class="strat-title">Never skip — especially on good days</div>
           <div class="strat-desc">Feeling fine is usually proof the medication is working. Stopping creates dangerous gaps in glucose control and can trigger rapid deterioration. Consistency is the entire point of chronic disease management.</div>
-          <div class="strat-tip">💡 Missed a dose? Take it as soon as you remember — unless it's near your next dose time. Never double up.</div>
+          <div class="strat-tip"> Missed a dose? Take it as soon as you remember — unless it's near your next dose time. Never double up.</div>
         </div>
       </div>
       <div class="strat-row rv rv-d2" role="listitem">
@@ -821,7 +845,7 @@
         <div>
           <div class="strat-title">Refill your prescription early</div>
           <div class="strat-desc">Running out creates dangerous treatment gaps. Always maintain at least a week's supply as a buffer. Many pharmacies offer automatic refill programmes — ask your pharmacist about enrolling.</div>
-          <div class="strat-tip">💡 Set a phone reminder when you're down to your last 7 days of supply — before you even think about running out.</div>
+          <div class="strat-tip"> Set a phone reminder when you're down to your last 7 days of supply — before you even think about running out.</div>
         </div>
       </div>
       <div class="strat-row rv" role="listitem">
@@ -829,7 +853,7 @@
         <div>
           <div class="strat-title">Build a support network</div>
           <div class="strat-desc">Talk openly with family and friends about your treatment needs. Emotional support significantly improves long-term adherence. Consider joining a peer diabetes group — the IDF runs programmes specifically for young adults.</div>
-          <div class="strat-tip">💡 The International Diabetes Federation has young adult peer programmes: <a href="https://www.idf.org" target="_blank" rel="noopener noreferrer">idf.org</a></div>
+          <div class="strat-tip"> The International Diabetes Federation has young adult peer programmes: <a href="https://www.idf.org" target="_blank" rel="noopener noreferrer">idf.org</a></div>
         </div>
       </div>
     </div>
@@ -970,20 +994,6 @@
       <li><a href="#quiz">Knowledge Quiz</a></li>
     </ul>
   </div>
-  <div class="footer-col">
-    <h5>Sources</h5>
-    <ul>
-      <li><a href="https://www.who.int/news-room/fact-sheets/detail/diabetes" target="_blank" rel="noopener noreferrer">WHO</a></li>
-      <li><a href="https://www.idf.org" target="_blank" rel="noopener noreferrer">IDF</a></li>
-      <li><a href="https://www.diabetes.org" target="_blank" rel="noopener noreferrer">ADA</a></li>
-      <li><a href="https://www.cdc.gov/diabetes" target="_blank" rel="noopener noreferrer">CDC</a></li>
-    </ul>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2025 AdhereMed · Educational resource for young adults with diabetes · Content verified against WHO, IDF, ADA &amp; CDC guidelines.</p>
-    <p>Image credits: <a href="https://commons.wikimedia.org" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> · Logos are property of their respective organisations · Educational use only · No copyright infringement intended.</p>
-  </div>
-</footer>
 
 <!-- TOGGLES -->
 <button class="theme-tgl" id="themeBtn" aria-label="Toggle light or dark theme" title="Toggle theme">🌙</button>
