@@ -160,6 +160,7 @@
 
     /* ── DARK BENTO CARDS ── */
     .d-bento-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .dbc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:30px;transition:all .3s;position:relative;overflow:hidden}
     .dbc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:0;transition:opacity .3s}
     .dbc:hover{background:rgba(14,165,233,.06);border-color:rgba(14,165,233,.18);transform:translateY(-4px)}
     .dbc:hover::before{opacity:1}
@@ -184,13 +185,6 @@
     .comp-name{font-weight:600;font-size:.93rem;color:#0F2137;margin-bottom:3px}
     .comp-desc{font-size:.84rem;color:#5A6D82;line-height:1.65}
     .dka-callout{background:linear-gradient(135deg,#0F2137,#152C45);border:1px solid rgba(14,165,233,.2);border-radius:22px;padding:36px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
-    .dka-callout.has-img{grid-template-columns:auto 1fr auto;gap:28px}
-    .dka-img{width:360px;height:200px;border-radius:18px;overflow:hidden;flex-shrink:0;box-shadow:0 12px 40px rgba(0,0,0,.35);border:1px solid rgba(14,165,233,.18)}
-    .dka-img img{width:100%;height:100%;object-fit:cover;display:block}
-    .dbc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:30px;transition:all .3s;position:relative;overflow:hidden}
-    .dbc-img{width:100%;height:160px;border-radius:14px;overflow:hidden;margin-bottom:20px;background:radial-gradient(ellipse at center,rgba(14,165,233,.08),rgba(5,13,26,.9));border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center}
-    .dbc-img img{max-width:100%;max-height:100%;width:auto;height:100%;object-fit:contain;display:block;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
-    .dbc:hover .dbc-img img{transform:scale(1.06)}
     .dka-icon{font-size:3.5rem;line-height:1}
     .dka-h{font-family:var(--serif);font-size:1.35rem;font-weight:600;color:#fff;margin-bottom:8px}
     .dka-p{font-size:.9rem;color:rgba(255,255,255,.52);line-height:1.78;font-weight:300}
@@ -336,28 +330,6 @@
     /* Bento cards — GeneShield exact style */
     [data-theme="light"] .bc-soft{background:linear-gradient(145deg,#EFF8FF,#F0FDFA);border-color:#D6EAF5}
     [data-theme="light"] .bc-soft:hover{box-shadow:0 20px 60px rgba(14,165,233,0.1);border-color:rgba(14,165,233,0.2)}
-
-    /* ── TYPES IMAGE ROW ── */
-    .types-imgs{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:22px}
-
-    /* ── BENTO IMAGE CARD ── */
-    .bc-image{padding:0;overflow:hidden;position:relative;min-height:280px;border:1px solid rgba(14,165,233,.12);box-shadow:0 4px 28px rgba(14,165,233,.05);background:linear-gradient(145deg,#EFF8FF,#F0FDFA)}
-
-    /* ── SYMPTOMS INFOGRAPHIC FRAME (sits on dark section) ── */
-    .symp-frame{position:relative;margin:28px auto 36px;border-radius:22px;overflow:hidden;background:linear-gradient(145deg,#EFF8FF,#F0FDFA);border:1px solid rgba(14,165,233,.18);box-shadow:0 12px 44px rgba(0,0,0,.25);max-width:560px}
-    .symp-frame img{display:block;width:100%;height:auto}
-    .symp-cap{position:absolute;top:18px;left:22px;font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(14,165,233,.85);background:rgba(255,255,255,.92);padding:6px 12px;border-radius:100px;backdrop-filter:blur(8px)}
-    .bc-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:28px;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
-    .bc-image:hover{box-shadow:0 20px 60px rgba(14,165,233,.12);border-color:rgba(14,165,233,.22)}
-    .bc-image:hover img{transform:scale(1.04)}
-    .bc-image-cap{position:absolute;left:24px;bottom:20px;z-index:2;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(14,165,233,.7)}
-    .types-img{grid-column:span 4;position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/3;background:linear-gradient(145deg,#EFF8FF,#F0FDFA);border:1px solid #D6EAF5;box-shadow:0 4px 28px rgba(14,165,233,.05);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
-    .types-img:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(14,165,233,.12);border-color:rgba(14,165,233,.2)}
-    .types-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
-    .types-img:hover img{transform:scale(1.04)}
-    .types-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(5,13,26,.55) 100%);pointer-events:none}
-    .types-img-cap{position:absolute;left:18px;right:18px;bottom:16px;z-index:2;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#fff;opacity:.95}
-    @media (max-width:900px){.types-img{grid-column:span 1}.types-imgs{grid-template-columns:1fr}}
     [data-theme="light"] .bc-white{background:rgba(255,255,255,0.85);backdrop-filter:blur(16px);border-color:#E2E8F0}
     [data-theme="light"] .bc-white:hover{box-shadow:0 20px 60px rgba(14,165,233,0.08);border-color:rgba(14,165,233,0.15)}
     [data-theme="light"] .bc-navy{background:#0F2137;color:#fff}
@@ -452,8 +424,6 @@
       .d-bento-grid{grid-template-columns:1fr}
       .comp-grid{grid-template-columns:1fr}
       .dka-callout{grid-template-columns:1fr;text-align:center}
-      .dka-callout.has-img{grid-template-columns:1fr}
-      .dka-img{width:100%;max-width:420px;height:auto;aspect-ratio:2/1;margin:0 auto}
       .steps-grid{grid-template-columns:1fr 1fr}
       .barrier-grid{grid-template-columns:1fr}
       .stats-strip{grid-template-columns:1fr 1fr}
@@ -531,7 +501,7 @@
   <div class="hero-content">
     <div class="hero-tag">
       <div class="hero-tag-dot" aria-hidden="true"></div>
-      <span>Medication Adherence — Type 1 and Type 2 Diabetes</span>
+      <span>Medication Adherence — Young Adults &amp; Diabetes</span>
     </div>
     <h1><i class="shimmer">Take Your Meds.</i><br>Stay <span id="typed-hero" class="typed-text"></span></h1>
     <p class="hero-desc">One pill a day keeps the crisis away. A simple guide to medication adherence for type 1 and type 2 diabetes.</p>
@@ -638,20 +608,6 @@
           <div class="bc-desc">Occurs during pregnancy when placental hormones cause insulin resistance. Usually resolves after birth but significantly raises the mother's lifetime risk of developing Type 2 diabetes. Requires careful monitoring.</div>
         </div>
       </div>
-      <div class="types-imgs rv">
-        <figure class="types-img">
-          <img src="images/type-1-diabetes.jpeg" alt="Diagram showing healthy versus destroyed insulin-producing pancreatic cells in Type 1 diabetes"/>
-          <figcaption class="types-img-cap">Type 01 — Autoimmune Response</figcaption>
-        </figure>
-        <figure class="types-img rv-d1">
-          <img src="images/type-2-diabetes.jpeg" alt="Waistline being measured, representing lifestyle factors associated with Type 2 diabetes"/>
-          <figcaption class="types-img-cap">Type 02 — Insulin Resistance</figcaption>
-        </figure>
-        <figure class="types-img rv-d2">
-          <img src="images/gestational.jpeg" alt="Person administering an insulin injection into the abdomen"/>
-          <figcaption class="types-img-cap">Gestational Diabetes</figcaption>
-        </figure>
-      </div>
     </div>
   </section>
 
@@ -673,21 +629,18 @@
     </div>
     <div class="comp-grid rv">
       <div class="dbc">
-        <div class="dbc-img"><img src="images/cardiovascular.png" alt="Anatomical cross-section of a human heart showing internal chambers and valves"/></div>
         <span class="dbc-icon" aria-hidden="true"></span>
         <span class="dbc-n">Complication 01</span>
         <div class="dbc-t">Cardiovascular Disease</div>
         <div class="dbc-d">High blood glucose damages artery walls, raising risk of heart attack, stroke, and peripheral artery disease. The leading cause of death among people with diabetes globally.</div>
       </div>
       <div class="dbc">
-        <div class="dbc-img"><img src="images/kidney-damage.png" alt="Anatomical diagram of a kidney showing internal structure and blood vessels"/></div>
         <span class="dbc-icon" aria-hidden="true"></span>
         <span class="dbc-n">Complication 02</span>
         <div class="dbc-t">Kidney Damage</div>
         <div class="dbc-d">Chronic hyperglycaemia damages the kidney's filtering vessels, progressively reducing function. Can advance to kidney failure requiring dialysis or transplant.</div>
       </div>
       <div class="dbc">
-        <div class="dbc-img"><img src="images/retinopathy.png" alt="Anatomical rendering of a human eye showing the iris and sclera"/></div>
         <span class="dbc-icon" aria-hidden="true"></span>
         <span class="dbc-n">Complication 03</span>
         <div class="dbc-t">Retinopathy</div>
@@ -700,29 +653,24 @@
         <div class="dbc-d">Tingling, numbness, or burning pain usually starting in hands and feet. Severe cases cause complete loss of sensation, dramatically raising the risk of undetected injury.</div>
       </div>
       <div class="dbc">
-        <div class="dbc-img"><img src="images/cognitive-decline.png" alt="Anatomical rendering of a human brain inside a transparent skull"/></div>
         <span class="dbc-icon" aria-hidden="true"></span>
         <span class="dbc-n">Complication 05</span>
         <div class="dbc-t">Cognitive Decline</div>
         <div class="dbc-d">Long-term poor glycaemic control is linked to accelerated cognitive decline and increased dementia risk — effects that appear even in young adults with persistent hyperglycaemia.</div>
       </div>
       <div class="dbc">
-        <div class="dbc-img"><img src="images/foot-damage.png" alt="Anatomical diagram of the foot showing bones, tendons, and soft tissue"/></div>
         <span class="dbc-icon" aria-hidden="true"></span>
         <span class="dbc-n">Complication 06</span>
         <div class="dbc-t">Foot Damage & Amputation</div>
         <div class="dbc-d">Combined nerve damage and poor circulation cause ulcers that heal slowly. Diabetes causes the majority of non-traumatic lower limb amputations performed worldwide every year.</div>
       </div>
     </div>
-    <div class="dka-callout has-img rv" style="margin-top:18px">
+    <div class="dka-callout rv" style="margin-top:18px">
       <div class="dka-icon" aria-hidden="true"></div>
       <div>
         <div class="dka-h">Acute Emergency: Diabetic Ketoacidosis (DKA)</div>
         <div class="dka-p">When the body lacks insulin, it burns fat for energy — producing ketones that dangerously acidify the blood. DKA is a life-threatening emergency requiring immediate hospitalisation. Symptoms: extreme thirst, vomiting, abdominal pain, confusion, and fruity-smelling breath. Poor adherence is a leading trigger.</div>
         <div class="dka-cite">Sources: <a href="https://www.who.int/news-room/fact-sheets/detail/diabetes" target="_blank" rel="noopener noreferrer">WHO — Diabetes Fact Sheet</a> · <a href="https://www.idf.org/our-activities/diabetes-education/diabetes-complications.html" target="_blank" rel="noopener noreferrer">IDF — Diabetes Complications</a></div>
-      </div>
-      <div class="dka-img">
-        <img src="images/dka-symptoms.jpg" alt="Infographic showing signs and symptoms of diabetic ketoacidosis including confusion, fruity breath, difficulty breathing, vomiting, exhaustion, flushed skin, extreme thirst, abdominal pain, nausea, and excessive urination"/>
       </div>
     </div>
   </div>
@@ -773,10 +721,6 @@
         <div class="bc-t">Slows disease progression</div>
         <div class="bc-desc">Maintaining healthy HbA1c through adherence consistently slows or prevents progression from manageable diabetes to severe complications. The earlier you commit, the greater the long-term dividend.</div>
       </div>
-      <div class="bc bc-8 bc-image rv rv-d2">
-        <img src="images/adhere.jpeg" alt="Young woman using a blood glucose meter, holding a fresh apple, and organising daily medication — illustrating a consistent diabetes self-care routine"/>
-        <span class="bc-image-cap">Daily Routine</span>
-      </div>
     </div>
   </div>
 </div>
@@ -789,10 +733,6 @@
       <h2 id="pat-h">Young Adults with <i>Diabetes Mellitus</i></h2>
       <p>Why this age group faces uniquely difficult challenges — and what makes adherence harder here than anywhere else.</p>
     </div>
-    <figure class="symp-frame rv">
-      <span class="symp-cap">Know The Signs</span>
-      <img src="images/diabetes-symptoms.jpeg" alt="Infographic showing common diabetes symptoms in a young woman: headache, dizziness, blurry vision, tingling in hands or feet, frequent urination, thirst, hunger, and weight loss"/>
-    </figure>
     <div class="target-band rv">
       <span class="target-badge">Ages 15–35 · Students &amp; Young Professionals</span>
       <h3>Why this age group <i>struggles most</i></h3>
