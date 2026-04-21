@@ -149,7 +149,7 @@
     .bc-deco-c{top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:currentColor}
     .bc-deco-d{bottom:-30px;left:-30px;width:24px;height:24px;background:currentColor;box-shadow:60px 0 0 currentColor,0 60px 0 currentColor,60px 60px 0 currentColor,120px 0 0 currentColor,0 120px 0 currentColor,120px 60px 0 currentColor,60px 120px 0 currentColor,120px 120px 0 currentColor}
 
-    .bc-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:20px}
+    .bc-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-family:var(--mono);font-weight:600;letter-spacing:.04em;margin-bottom:20px;color:var(--c1)}
     .bci-1{background:rgba(14,165,233,.1);color:var(--c1)}
     .bci-2{background:rgba(245,158,11,.1)}
     .bci-3{background:rgba(139,92,246,.1)}
@@ -202,7 +202,7 @@
     .barrier-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .bar-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:26px;display:flex;gap:16px;align-items:flex-start;transition:all .3s}
     .bar-card:hover{background:rgba(14,165,233,.05);border-color:rgba(14,165,233,.16);transform:translateY(-3px)}
-    .bar-icon{width:46px;height:46px;border-radius:12px;background:rgba(14,165,233,.1);display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0}
+    .bar-icon{width:46px;height:46px;border-radius:12px;background:rgba(14,165,233,.1);display:flex;align-items:center;justify-content:center;font-size:.95rem;font-family:var(--mono);font-weight:600;letter-spacing:.04em;color:var(--c1);flex-shrink:0}
     .bar-t{font-weight:600;font-size:.94rem;color:#fff;margin-bottom:5px}
     .bar-d{font-size:.85rem;color:rgba(255,255,255,.42);line-height:1.7;font-weight:300}
 
@@ -739,37 +739,37 @@
     </div>
     <div class="bento-grid">
       <div class="bc bc-6 bc-soft rv">
-        <div class="bc-icon bci-4" aria-hidden="true"></div>
+        <div class="bc-icon bci-4">01</div>
         <span class="bc-ol">Reason 01</span>
         <div class="bc-t">Maintains normal blood glucose</div>
         <div class="bc-desc">Consistent medication keeps levels stable in your bloodstream, preventing hypoglycaemia (dangerous lows causing dizziness and confusion) and chronic hyperglycaemia (damaging highs that destroy blood vessels and organs over time).</div>
       </div>
       <div class="bc bc-6 bc-white rv rv-d1">
-        <div class="bc-icon bci-1" aria-hidden="true"></div>
+        <div class="bc-icon bci-1">02</div>
         <span class="bc-ol">Reason 02</span>
         <div class="bc-t">Protects every blood vessel</div>
         <div class="bc-desc">Microvascular complications begin with weakened, leaking blood vessels. Adherence prevents this damage — protecting your eyes, kidneys, and nerves before irreversible harm occurs. Prevention is always better than treatment.</div>
       </div>
       <div class="bc bc-4 bc-grad rv rv-d2">
-        <div class="bc-icon" style="background:rgba(255,255,255,.18)" aria-hidden="true"></div>
+        <div class="bc-icon" style="background:rgba(255,255,255,.18);color:#fff">03</div>
         <span class="bc-ol" style="color:rgba(255,255,255,.65)">Reason 03</span>
         <div class="bc-t" style="color:#fff">Prevents emergencies</div>
         <div class="bc-desc" style="color:rgba(255,255,255,.82)">Poor adherence triggers sudden crises like DKA or Hyperosmolar Hyperglycaemic State — both life-threatening. Staying on track prevents these entirely.</div>
       </div>
       <div class="bc bc-4 bc-soft rv rv-d3">
-        <div class="bc-icon bci-3" aria-hidden="true"></div>
+        <div class="bc-icon bci-3">04</div>
         <span class="bc-ol">Reason 04</span>
         <div class="bc-t">Saves money long-term</div>
         <div class="bc-desc">The cost of treating complications — dialysis, eye surgery, amputations — far exceeds the cost of consistent medication. Adherence today is the most cost-effective health investment you can make.</div>
       </div>
       <div class="bc bc-4 bc-navy rv">
-        <div class="bc-icon bci-2" aria-hidden="true"></div>
+        <div class="bc-icon bci-2" style="color:#fff">05</div>
         <span class="bc-ol">Reason 05</span>
         <div class="bc-t">Preserves quality of life</div>
         <div class="bc-desc">Good adherence keeps symptoms manageable so you can study, work, socialise, and exercise without your condition dominating every day. Control your diabetes — don't let it control you.</div>
       </div>
       <div class="bc bc-4 bc-soft rv rv-d1">
-        <div class="bc-icon bci-4" aria-hidden="true"></div>
+        <div class="bc-icon bci-4">06</div>
         <span class="bc-ol">Reason 06</span>
         <div class="bc-t">Slows disease progression</div>
         <div class="bc-desc">Maintaining healthy HbA1c through adherence consistently slows or prevents progression from manageable diabetes to severe complications. The earlier you commit, the greater the long-term dividend.</div>
@@ -801,27 +801,27 @@
     </div>
     <div class="barrier-grid">
       <div class="bar-card rv">
-        <div class="bar-icon" aria-hidden="true"></div>
+        <div class="bar-icon">01</div>
         <div><div class="bar-t">Cost of Medication</div><div class="bar-d">Many patients can't afford long-term treatment, especially insulin and newer oral drugs. Financial pressure leads to skipped doses, dose reduction, or complete discontinuation — all of which are dangerous.</div></div>
       </div>
       <div class="bar-card rv rv-d1">
-        <div class="bar-icon" aria-hidden="true"></div>
+        <div class="bar-icon">02</div>
         <div><div class="bar-t">Poor Health Literacy</div><div class="bar-d">Patients who don't understand their condition may stop medication when symptoms improve — wrongly believing they are cured. Informed patients adhere significantly better than uninformed ones.</div></div>
       </div>
       <div class="bar-card rv rv-d2">
-        <div class="bar-icon" aria-hidden="true"></div>
+        <div class="bar-icon">03</div>
         <div><div class="bar-t">Complex Regimens &amp; Busy Schedules</div><div class="bar-d">Multiple medications at different times, exams, travel, and irregular routines all disrupt adherence patterns — particularly for students and young professionals navigating unpredictable days.</div></div>
       </div>
       <div class="bar-card rv rv-d3">
-        <div class="bar-icon" aria-hidden="true"></div>
+        <div class="bar-icon">04</div>
         <div><div class="bar-t">Side Effects &amp; Fear of Needles</div><div class="bar-d">Nausea, weight gain, and needle phobia are major deterrents. Psychological resistance to insulin therapy leads to poor glycaemic control and long delays before starting necessary treatment.</div></div>
       </div>
       <div class="bar-card rv">
-        <div class="bar-icon" aria-hidden="true"></div>
+        <div class="bar-icon">05</div>
         <div><div class="bar-t">Social &amp; Dietary Pressure</div><div class="bar-d">Peers and family encourage indulgence. Cultural food norms, social events, and the desire to participate without restriction all create real friction for young adults managing dietary guidelines.</div></div>
       </div>
       <div class="bar-card rv rv-d1">
-        <div class="bar-icon" aria-hidden="true"></div>
+        <div class="bar-icon">06</div>
         <div><div class="bar-t">Denial &amp; Short-term Thinking</div><div class="bar-d">Without visible consequences today, it's easy to deprioritise medication that protects future health. Some young adults don't fully accept their diagnosis or understand the long-term severity of the illness.</div></div>
       </div>
     </div>
