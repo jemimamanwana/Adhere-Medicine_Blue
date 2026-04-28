@@ -10,27 +10,29 @@
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
     /* ── VIDEO CAROUSEL ── */
-    .vid-carousel{display:flex;align-items:center;gap:20px;max-width:820px;margin:0 auto}
-    .vid-stage{flex:1;overflow:hidden;position:relative}
-    .vid-slide{display:none;flex-direction:column;gap:16px}
-    .vid-slide.active{display:flex}
-    .vid-player-box{width:100%;position:relative;padding-top:56.25%;border-radius:20px;overflow:hidden;background:#0C1C30;box-shadow:0 16px 52px rgba(14,165,233,.15);border:1px solid rgba(14,165,233,.18)}
-    .vid-thumb{position:absolute;inset:0;cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .vid-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
-    .vid-thumb:hover img{transform:scale(1.04)}
-    .vid-thumb::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.28)}
-    .vid-play-btn{position:absolute;z-index:2;width:68px;height:68px;border-radius:50%;background:rgba(14,165,233,.92);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 8px rgba(14,165,233,.22);transition:all .3s}
-    .vid-thumb:hover .vid-play-btn{transform:scale(1.1);background:var(--c1);box-shadow:0 0 0 14px rgba(14,165,233,.18)}
-    .vid-iframe-live{position:absolute;inset:0;width:100%;height:100%;border:none}
-    .vid-caption{text-align:center;padding:0 8px}
-    .vid-tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--c1);display:block;margin-bottom:6px}
-    .vid-title{font-family:var(--serif);font-size:1.2rem;font-weight:600;color:#0F2137;line-height:1.3}
-    .vid-dots{display:flex;justify-content:center;gap:8px;margin-top:16px}
+    .vid-carousel{display:flex;align-items:center;gap:24px;max-width:780px;margin:0 auto}
+    .vid-stage{flex:1;min-width:0}
+    .vid-slide{display:none}
+    .vid-slide.active{display:block}
+    .vid-card{display:block;text-decoration:none;border-radius:20px;overflow:hidden;border:1px solid rgba(14,165,233,.18);box-shadow:0 16px 52px rgba(14,165,233,.1);transition:transform .3s,box-shadow .3s;background:#0C1C30}
+    .vid-card:hover{transform:translateY(-4px);box-shadow:0 24px 64px rgba(14,165,233,.2)}
+    .vid-thumb-wrap{position:relative;width:100%;padding-top:56.25%;overflow:hidden;background:#0a1628}
+    .vid-thumb-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s ease;display:block}
+    .vid-card:hover .vid-thumb-wrap img{transform:scale(1.04)}
+    .vid-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,13,26,.7) 0%,rgba(5,13,26,.2) 60%,transparent 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:background .3s}
+    .vid-card:hover .vid-overlay{background:linear-gradient(0deg,rgba(5,13,26,.8) 0%,rgba(14,165,233,.15) 60%,transparent 100%)}
+    .vid-play-btn{width:72px;height:72px;border-radius:50%;background:rgba(255,0,0,.88);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 8px rgba(255,0,0,.18);transition:all .3s;padding-left:4px}
+    .vid-card:hover .vid-play-btn{transform:scale(1.12);box-shadow:0 0 0 14px rgba(255,0,0,.14)}
+    .vid-watch-label{font-family:var(--sans);font-size:.82rem;font-weight:600;color:rgba(255,255,255,.9);letter-spacing:.04em;background:rgba(0,0,0,.4);padding:6px 14px;border-radius:100px;backdrop-filter:blur(8px)}
+    .vid-caption{padding:18px 22px;background:#0C1C30}
+    .vid-tag{font-family:var(--mono);font-size:.67rem;letter-spacing:.16em;text-transform:uppercase;color:var(--c1);display:block;margin-bottom:5px}
+    .vid-title{font-family:var(--serif);font-size:1.15rem;font-weight:600;color:#fff;line-height:1.3;margin:0}
+    .vid-dots{display:flex;justify-content:center;gap:8px;margin-top:18px}
     .vid-dot{width:8px;height:8px;border-radius:50%;border:none;background:rgba(14,165,233,.25);cursor:pointer;transition:all .3s;padding:0}
     .vid-dot.active{background:var(--c1);width:26px;border-radius:4px}
-    .vid-arrow{width:50px;height:50px;border-radius:50%;background:#fff;border:1.5px solid rgba(14,165,233,.22);color:var(--c1);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .3s;box-shadow:0 4px 18px rgba(14,165,233,.1)}
+    .vid-arrow{width:52px;height:52px;border-radius:50%;background:#fff;border:1.5px solid rgba(14,165,233,.22);color:var(--c1);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .3s;box-shadow:0 4px 18px rgba(14,165,233,.1)}
     .vid-arrow:hover{background:var(--c1);color:#fff;border-color:var(--c1);transform:scale(1.1);box-shadow:0 8px 28px rgba(14,165,233,.3)}
-    @media(max-width:640px){.vid-carousel{gap:10px}.vid-arrow{width:38px;height:38px}.vid-play-btn{width:52px;height:52px}}
+    @media(max-width:640px){.vid-carousel{gap:10px}.vid-arrow{width:38px;height:38px}.vid-play-btn{width:56px;height:56px}}
 
     /* ── GROUP CREDITS ── */
     .group-credits{background:var(--dark3);border-top:1px solid rgba(14,165,233,0.12);border-bottom:1px solid rgba(14,165,233,0.12);padding:72px 48px}
@@ -705,59 +707,66 @@
 
       <div class="vid-carousel rv">
         <!-- LEFT ARROW -->
-        <button class="vid-arrow vid-prev" id="vidPrev" aria-label="Previous video">
+        <button class="vid-arrow" id="vidPrev" aria-label="Previous video">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
 
         <div class="vid-stage">
-
           <!-- SLIDE 1 -->
           <div class="vid-slide active" id="vslide-0">
-            <div class="vid-player-box" id="vbox-0">
-              <!-- thumbnail shown first, replaced by iframe on click -->
-              <div class="vid-thumb" id="vthumb-0" onclick="playVid(0,'3FzuTWCj9gE')" role="button" tabindex="0" aria-label="Play video 1" onkeydown="if(event.key==='Enter')playVid(0,'3FzuTWCj9gE')">
-                <img src="https://img.youtube.com/vi/3FzuTWCj9gE/maxresdefault.jpg" alt="Video 1 thumbnail" onerror="this.src='https://img.youtube.com/vi/3FzuTWCj9gE/hqdefault.jpg'"/>
-                <div class="vid-play-btn" aria-hidden="true">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+            <a class="vid-card" href="https://www.youtube.com/watch?v=3FzuTWCj9gE" target="_blank" rel="noopener noreferrer" aria-label="Watch video 1 on YouTube">
+              <div class="vid-thumb-wrap">
+                <img src="https://img.youtube.com/vi/3FzuTWCj9gE/hqdefault.jpg" alt="Video 1 thumbnail"/>
+                <div class="vid-overlay">
+                  <div class="vid-play-btn">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                  <span class="vid-watch-label">Watch on YouTube ↗</span>
                 </div>
               </div>
-            </div>
-            <div class="vid-caption">
-              <span class="vid-tag">Video 1 of 3</span>
-              <p class="vid-title">Why Medication Adherence Saves Lives</p>
-            </div>
+              <div class="vid-caption">
+                <span class="vid-tag">Video 1 of 3</span>
+                <p class="vid-title">Why Medication Adherence Saves Lives</p>
+              </div>
+            </a>
           </div>
 
           <!-- SLIDE 2 -->
           <div class="vid-slide" id="vslide-1">
-            <div class="vid-player-box" id="vbox-1">
-              <div class="vid-thumb" id="vthumb-1" onclick="playVid(1,'zOJaqMcZe9U')" role="button" tabindex="0" aria-label="Play video 2" onkeydown="if(event.key==='Enter')playVid(1,'zOJaqMcZe9U')">
-                <img src="https://img.youtube.com/vi/zOJaqMcZe9U/maxresdefault.jpg" alt="Video 2 thumbnail" onerror="this.src='https://img.youtube.com/vi/zOJaqMcZe9U/hqdefault.jpg'"/>
-                <div class="vid-play-btn" aria-hidden="true">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+            <a class="vid-card" href="https://www.youtube.com/watch?v=zOJaqMcZe9U" target="_blank" rel="noopener noreferrer" aria-label="Watch video 2 on YouTube">
+              <div class="vid-thumb-wrap">
+                <img src="https://img.youtube.com/vi/zOJaqMcZe9U/hqdefault.jpg" alt="Video 2 thumbnail"/>
+                <div class="vid-overlay">
+                  <div class="vid-play-btn">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                  <span class="vid-watch-label">Watch on YouTube ↗</span>
                 </div>
               </div>
-            </div>
-            <div class="vid-caption">
-              <span class="vid-tag">Video 2 of 3</span>
-              <p class="vid-title">Staying Consistent With Your Treatment</p>
-            </div>
+              <div class="vid-caption">
+                <span class="vid-tag">Video 2 of 3</span>
+                <p class="vid-title">Staying Consistent With Your Treatment</p>
+              </div>
+            </a>
           </div>
 
           <!-- SLIDE 3 -->
           <div class="vid-slide" id="vslide-2">
-            <div class="vid-player-box" id="vbox-2">
-              <div class="vid-thumb" id="vthumb-2" onclick="playVid(2,'scqr241O9mc')" role="button" tabindex="0" aria-label="Play video 3" onkeydown="if(event.key==='Enter')playVid(2,'scqr241O9mc')">
-                <img src="https://img.youtube.com/vi/scqr241O9mc/maxresdefault.jpg" alt="Video 3 thumbnail" onerror="this.src='https://img.youtube.com/vi/scqr241O9mc/hqdefault.jpg'"/>
-                <div class="vid-play-btn" aria-hidden="true">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+            <a class="vid-card" href="https://www.youtube.com/watch?v=scqr241O9mc" target="_blank" rel="noopener noreferrer" aria-label="Watch video 3 on YouTube">
+              <div class="vid-thumb-wrap">
+                <img src="https://img.youtube.com/vi/scqr241O9mc/hqdefault.jpg" alt="Video 3 thumbnail"/>
+                <div class="vid-overlay">
+                  <div class="vid-play-btn">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                  <span class="vid-watch-label">Watch on YouTube ↗</span>
                 </div>
               </div>
-            </div>
-            <div class="vid-caption">
-              <span class="vid-tag">Video 3 of 3</span>
-              <p class="vid-title">Managing Diabetes Day by Day</p>
-            </div>
+              <div class="vid-caption">
+                <span class="vid-tag">Video 3 of 3</span>
+                <p class="vid-title">Managing Diabetes Day by Day</p>
+              </div>
+            </a>
           </div>
 
           <!-- DOTS -->
@@ -769,7 +778,7 @@
         </div>
 
         <!-- RIGHT ARROW -->
-        <button class="vid-arrow vid-next" id="vidNext" aria-label="Next video">
+        <button class="vid-arrow" id="vidNext" aria-label="Next video">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
@@ -1041,7 +1050,7 @@
     <div class="sec-head rv">
       <span class="overline">Test Your Knowledge</span>
       <h2 id="quiz-h">Quick <i>Knowledge Check</i></h2>
-      <p>5 questions. No pressure. See how much you've absorbed.</p>
+      <p>10 questions. No pressure. See how much you've absorbed.</p>
     </div>
     <div class="quiz-card rv rv-d1">
       <div class="quiz-bar" role="progressbar" aria-label="Quiz progress" id="qbar-el" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
@@ -1258,11 +1267,16 @@
 
   // ── QUIZ ──
   const QS=[
-    {q:"What does medication adherence mean in diabetes care?",opts:["Only taking medication when feeling sick","Taking prescribed meds at the right time, dose, and for the full recommended duration","Taking medication on weekdays only","Reducing your dose when blood sugar feels normal"],a:1,e:"Correct! Adherence means consistently taking medication as prescribed — right time, right dose, right duration — even when you feel well."},
-    {q:"Which complication results from blood vessel damage in the retina due to uncontrolled diabetes?",opts:["Nephropathy","Neuropathy","Retinopathy","Cardiomyopathy"],a:2,e:"Retinopathy damages the retina's blood vessels, causing blurred vision and potentially permanent blindness. It's a leading cause of preventable blindness worldwide."},
+    {q:"What does medication adherence mean for someone with Type 2 Diabetes?",opts:["Taking medication only when you feel sick","Taking medication exactly as prescribed by your healthcare provider","Sharing medication with others","Stopping medication when symptoms improve"],a:1,e:"Correct! Medication adherence means taking your medication exactly as your healthcare provider prescribed — the right dose, at the right time, every day — even when you feel fine."},
+    {q:"Why is it important to take diabetes medication at the same time every day?",opts:["It helps maintain stable blood sugar levels","It makes the medicine taste better","It reduces the need for exercise","It cures diabetes completely"],a:0,e:"Taking medication at the same time daily helps keep blood sugar levels stable and consistent throughout the day. Irregular timing leads to dangerous highs and lows."},
+    {q:"What is a common consequence of poor medication adherence in diabetes?",opts:["Improved energy levels","Stable blood sugar","Increased risk of complications","Faster recovery"],a:2,e:"Poor adherence allows blood sugar to stay elevated, which over time silently damages blood vessels, nerves, kidneys, eyes, and the heart — all preventable complications."},
+    {q:"Which of the following can help improve medication adherence?",opts:["Skipping doses when busy","Setting reminders or alarms","Taking medication randomly","Ignoring doctor's instructions"],a:1,e:"Setting alarms or reminders is one of the most effective and practical tools for building a consistent medication habit — it removes the burden of remembering from memory alone."},
+    {q:"If a patient misses a dose of their diabetes medication, what should they do first?",opts:["Double the next dose","Stop taking the medication","Follow the advice given by their healthcare provider or instructions","Ignore it completely"],a:2,e:"Always follow your healthcare provider's specific guidance for missed doses. Doubling up can be dangerous, and ignoring it disrupts your glucose control."},
+    {q:"Which complication results from blood vessel damage in the retina due to uncontrolled diabetes?",opts:["Nephropathy","Neuropathy","Retinopathy","Cardiomyopathy"],a:2,e:"Retinopathy damages the retina's blood vessels, causing blurred vision and potentially permanent blindness. Diabetes is one of the world's leading causes of preventable blindness."},
     {q:"A young adult stops insulin because they feel fine. What is most likely to happen?",opts:["Their diabetes permanently improves","Nothing — feeling fine means the disease is gone","Blood glucose rises, increasing risk of DKA and long-term complications","They'll need less medication in future"],a:2,e:"Feeling fine often means the medication is working. Stopping allows blood glucose to rise dangerously — DKA can develop rapidly without insulin."},
-    {q:"Which strategy is most evidence-backed for improving adherence?",opts:["Only taking meds during hospital visits","Linking medication to an existing daily habit like brushing teeth","Halving the dose to make it last longer","Skipping weekends to give the body a break"],a:1,e:"Habit anchoring — pairing medication with an existing routine — is one of the most consistently proven adherence strategies in chronic disease management."},
-    {q:"Type 1 diabetes is caused by which underlying process?",opts:["Eating too much sugar during childhood","The immune system attacking insulin-producing cells in the pancreas","Insufficient exercise and poor lifestyle","Pregnancy-related hormonal changes"],a:1,e:"Type 1 is an autoimmune disease — the immune system mistakenly destroys pancreatic beta cells. It is not caused by diet or lifestyle choices."}
+    {q:"Which strategy is most evidence-backed for improving adherence?",opts:["Only taking meds during hospital visits","Linking medication to an existing daily habit like brushing teeth","Halving the dose to make it last longer","Skipping weekends to give the body a break"],a:1,e:"Habit anchoring — pairing medication with an existing routine like brushing teeth — is one of the most consistently proven adherence strategies in chronic disease management."},
+    {q:"Type 1 diabetes is caused by which underlying process?",opts:["Eating too much sugar during childhood","The immune system attacking insulin-producing cells in the pancreas","Insufficient exercise and poor lifestyle","Pregnancy-related hormonal changes"],a:1,e:"Type 1 is an autoimmune disease — the immune system mistakenly destroys pancreatic beta cells. It is not caused by diet or lifestyle choices."},
+    {q:"Which organ produces insulin in the human body?",opts:["Liver","Kidney","Pancreas","Stomach"],a:2,e:"The pancreas produces insulin via specialised beta cells in the islets of Langerhans. In Type 1 diabetes these cells are destroyed; in Type 2 they become less effective over time."}
   ];
   let qi=0,answered=false;
   function renderQ(){
@@ -1305,41 +1319,17 @@
   // ── VIDEO CAROUSEL ──
   let vidIdx = 0;
   const vidTotal = 3;
-
   function goVid(n) {
-    // hide current
     document.getElementById('vslide-' + vidIdx).classList.remove('active');
     document.getElementById('dot' + vidIdx).classList.remove('active');
-    // stop any playing iframe by resetting the box (removes iframe)
-    const prevBox = document.getElementById('vbox-' + vidIdx);
-    const prevIframe = prevBox.querySelector('.vid-iframe-live');
-    if (prevIframe) {
-      const thumb = document.getElementById('vthumb-' + vidIdx);
-      if (thumb) thumb.style.display = 'flex';
-      prevIframe.remove();
-    }
     vidIdx = (n + vidTotal) % vidTotal;
     document.getElementById('vslide-' + vidIdx).classList.add('active');
     document.getElementById('dot' + vidIdx).classList.add('active');
   }
-
-  function playVid(idx, videoId) {
-    const thumb = document.getElementById('vthumb-' + idx);
-    const box   = document.getElementById('vbox-' + idx);
-    // inject real iframe
-    const iframe = document.createElement('iframe');
-    iframe.className = 'vid-iframe-live';
-    iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
-    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-    iframe.allowFullscreen = true;
-    iframe.title = 'YouTube video player';
-    box.appendChild(iframe);
-    thumb.style.display = 'none';
-  }
-
   document.getElementById('vidPrev').addEventListener('click', () => goVid(vidIdx - 1));
   document.getElementById('vidNext').addEventListener('click', () => goVid(vidIdx + 1));
 
+  renderQ();
 </script>
 </body>
 </html>
