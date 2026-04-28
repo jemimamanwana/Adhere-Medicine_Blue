@@ -1304,7 +1304,7 @@
     document.querySelectorAll('.qo')[q.a].classList.add('ok');
     if(!ok)document.querySelectorAll('.qo')[i].classList.add('no');
     const fb=document.getElementById('qfb');
-    fb.textContent=(ok?'✅ ':'❌ Incorrect. ')+q.e;
+    fb.textContent=(ok?' ':' Incorrect. ')+q.e;
     fb.className='quiz-fb show '+(ok?'ok':'no');
     document.getElementById('qnxt').className='quiz-nxt show';
   }
