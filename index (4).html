@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AdhereMed — Medication Adherence for Type 1 and Type 2 diabetes</title>
+  <meta name="description" content="A cinematic guide to medication adherence for young adults with diabetes. Learn why consistency saves lives."/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+    /* ── VIDEO CAROUSEL ── */
+    .vid-carousel{display:flex;align-items:center;gap:20px;max-width:820px;margin:0 auto}
+    .vid-stage{flex:1;overflow:hidden;position:relative}
+    .vid-slide{display:none;flex-direction:column;gap:16px}
+    .vid-slide.active{display:flex}
+    .vid-player-box{width:100%;position:relative;padding-top:56.25%;border-radius:20px;overflow:hidden;background:#0C1C30;box-shadow:0 16px 52px rgba(14,165,233,.15);border:1px solid rgba(14,165,233,.18)}
+    .vid-thumb{position:absolute;inset:0;cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .vid-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+    .vid-thumb:hover img{transform:scale(1.04)}
+    .vid-thumb::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.28)}
+    .vid-play-btn{position:absolute;z-index:2;width:68px;height:68px;border-radius:50%;background:rgba(14,165,233,.92);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 8px rgba(14,165,233,.22);transition:all .3s}
+    .vid-thumb:hover .vid-play-btn{transform:scale(1.1);background:var(--c1);box-shadow:0 0 0 14px rgba(14,165,233,.18)}
+    .vid-iframe-live{position:absolute;inset:0;width:100%;height:100%;border:none}
+    .vid-caption{text-align:center;padding:0 8px}
+    .vid-tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--c1);display:block;margin-bottom:6px}
+    .vid-title{font-family:var(--serif);font-size:1.2rem;font-weight:600;color:#0F2137;line-height:1.3}
+    .vid-dots{display:flex;justify-content:center;gap:8px;margin-top:16px}
+    .vid-dot{width:8px;height:8px;border-radius:50%;border:none;background:rgba(14,165,233,.25);cursor:pointer;transition:all .3s;padding:0}
+    .vid-dot.active{background:var(--c1);width:26px;border-radius:4px}
+    .vid-arrow{width:50px;height:50px;border-radius:50%;background:#fff;border:1.5px solid rgba(14,165,233,.22);color:var(--c1);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .3s;box-shadow:0 4px 18px rgba(14,165,233,.1)}
+    .vid-arrow:hover{background:var(--c1);color:#fff;border-color:var(--c1);transform:scale(1.1);box-shadow:0 8px 28px rgba(14,165,233,.3)}
+    @media(max-width:640px){.vid-carousel{gap:10px}.vid-arrow{width:38px;height:38px}.vid-play-btn{width:52px;height:52px}}
+
+    /* ── GROUP CREDITS ── */
+    .group-credits{background:var(--dark3);border-top:1px solid rgba(14,165,233,0.12);border-bottom:1px solid rgba(14,165,233,0.12);padding:72px 48px}
+    .group-credits-inner{max-width:860px;margin:0 auto;text-align:center}
+    .group-credits-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--c1);margin-bottom:12px;display:block}
+    .group-credits-title{font-family:var(--serif);font-size:2.6rem;font-weight:400;color:#fff;margin-bottom:40px;letter-spacing:-.02em;line-height:1.1}
+    .group-credits-title i{font-style:italic}
+    .group-credits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:780px;margin:0 auto}
+    .group-member{background:rgba(255,255,255,.04);border:1px solid rgba(14,165,233,.14);border-radius:16px;padding:22px 24px;display:flex;flex-direction:column;gap:7px;transition:all .3s;position:relative;overflow:hidden}
+    .group-member::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:0;transition:opacity .3s}
+    .group-member:hover{background:rgba(14,165,233,.07);border-color:rgba(14,165,233,.28);transform:translateY(-4px);box-shadow:0 12px 36px rgba(14,165,233,.1)}
+    .group-member:hover::before{opacity:1}
+    .member-name{font-family:var(--sans);font-weight:600;font-size:1rem;color:#fff;line-height:1.3}
+    .member-id{font-family:var(--mono);font-size:.78rem;color:var(--c1);opacity:.7;letter-spacing:.05em}
+    @media(max-width:720px){.group-credits-grid{grid-template-columns:1fr 1fr}.group-credits{padding:52px 24px}}
+    @media(max-width:460px){.group-credits-grid{grid-template-columns:1fr}}
+    :root{
+      --c1:#0EA5E9;--c2:#06B6D4;--c3:#14B8A6;--c4:#2DD4BF;--c5:#38BDF8;
+      --dark:#050D1A;--dark2:#081422;--dark3:#0C1C30;--dark4:#0F2137;
+      --g1:linear-gradient(135deg,#0EA5E9,#06B6D4,#14B8A6);
+      --g2:linear-gradient(135deg,#38BDF8,#2DD4BF);
+      --g3:linear-gradient(160deg,#0EA5E9 0%,#7C3AED 50%,#EC4899 100%);
+      --serif:'Cormorant Garamond',serif;
+      --sans:'Outfit',sans-serif;
+      --mono:'DM Mono',monospace;
+    }
+    html{scroll-behavior:smooth;overflow-x:hidden}
+    body{font-family:var(--sans);background:var(--dark);color:#fff;overflow-x:hidden}
+
+    /* ── SKIP LINK ── */
+    .skip{position:absolute;top:-60px;left:20px;background:var(--c1);color:#fff;padding:10px 20px;border-radius:100px;font-weight:600;z-index:10000;text-decoration:none;transition:top .3s;font-size:.88rem}
+    .skip:focus{top:12px}
+
+    /* ── CURSOR GLOW ── */
+    .cursor-glow{position:fixed;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(14,165,233,0.07) 0%,transparent 70%);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:opacity .3s;top:0;left:0}
+
+    /* ── NAV ── */
+    .nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:20px 52px;display:flex;align-items:center;justify-content:space-between;transition:all .5s}
+    .nav.solid{background:rgba(5,13,26,0.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(14,165,233,0.1);padding:14px 52px}
+    .nav-brand{display:flex;align-items:center;gap:13px;text-decoration:none}
+    .nav-logo{width:42px;height:42px;border-radius:13px;background:var(--g1);display:flex;align-items:center;justify-content:center;box-shadow:0 0 28px rgba(14,165,233,0.3);font-size:1.2rem;position:relative;overflow:hidden}
+    .nav-logo::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.18),transparent)}
+    .nav-wordmark{font-family:var(--serif);font-size:1.55rem;font-weight:600;color:#fff;letter-spacing:-.01em}
+    .nav-links{display:flex;align-items:center;gap:4px}
+    .nav-link{padding:9px 18px;font-weight:500;font-size:.87rem;color:rgba(255,255,255,0.55);border-radius:100px;transition:all .3s;text-decoration:none}
+    .nav-link:hover{color:#fff;background:rgba(255,255,255,0.06)}
+    .nav-right{display:flex;align-items:center;gap:10px}
+    .nav-cta{padding:10px 26px;font-weight:600;font-size:.87rem;color:#fff;background:var(--g1);border:none;border-radius:100px;cursor:pointer;box-shadow:0 0 22px rgba(14,165,233,0.22);transition:all .35s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+    .nav-cta:hover{transform:translateY(-2px);box-shadow:0 0 36px rgba(14,165,233,0.38)}
+    .nav-hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:5px}
+    .nav-hbg span{width:22px;height:2px;background:#fff;border-radius:2px;display:block;transition:all .3s}
+
+    /* ── HERO ── */
+    .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:140px 48px 100px;text-align:center;overflow:hidden}
+
+    /* animated mesh bg */
+    .hero-bg{position:absolute;inset:0;z-index:0}
+    .hero-bg::before{content:'';position:absolute;width:140%;height:140%;top:-20%;left:-20%;background:conic-gradient(from 180deg at 50% 50%,rgba(14,165,233,0.11) 0deg,rgba(6,182,212,0.07) 90deg,rgba(20,184,166,0.11) 180deg,rgba(124,58,237,0.05) 270deg,rgba(14,165,233,0.11) 360deg);animation:meshRot 22s linear infinite}
+    @keyframes meshRot{to{transform:rotate(360deg)}}
+    .hero-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 85% 65% at 50% 40%,transparent 0%,var(--dark) 100%)}
+
+    /* dot grid */
+    .hero-grid{position:absolute;inset:0;z-index:1;opacity:0.035;background-image:linear-gradient(rgba(255,255,255,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.4) 1px,transparent 1px);background-size:56px 56px}
+
+    /* radial accent glows */
+    .hero-glow-l{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(14,165,233,.12) 0%,transparent 70%);top:10%;left:-10%;z-index:1;pointer-events:none;animation:glowPulse 6s ease-in-out infinite}
+    .hero-glow-r{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(20,184,166,.1) 0%,transparent 70%);bottom:15%;right:-8%;z-index:1;pointer-events:none;animation:glowPulse 6s ease-in-out 3s infinite}
+    @keyframes glowPulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+
+    .hero-content{position:relative;z-index:10;max-width:900px}
+
+    .hero-tag{display:inline-flex;align-items:center;gap:10px;padding:5px 5px 5px 5px;border:1px solid rgba(14,165,233,0.22);border-radius:100px;font-size:.77rem;font-weight:500;color:var(--c5);margin-bottom:38px;background:rgba(14,165,233,0.06);backdrop-filter:blur(10px);letter-spacing:.04em;opacity:0;animation:riseIn .8s .15s forwards}
+    .hero-tag-dot{width:28px;height:28px;border-radius:50%;background:var(--g1);display:flex;align-items:center;justify-content:center;animation:tagPulse 2.5s ease-in-out infinite;font-size:.85rem}
+    @keyframes tagPulse{0%,100%{box-shadow:0 0 0 0 rgba(14,165,233,.28)}50%{box-shadow:0 0 0 10px rgba(14,165,233,0)}}
+    .hero-tag span{padding-right:16px;text-transform:uppercase;letter-spacing:.07em}
+
+    .hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(3rem,7vw,5.8rem);line-height:1.03;letter-spacing:-.02em;color:#fff;opacity:0;animation:riseIn .9s .3s forwards}
+    .hero h1 i{font-style:italic;position:relative;display:inline-block}
+    .hero h1 i::after{content:'';position:absolute;bottom:6px;left:0;right:0;height:4px;background:var(--g1);border-radius:2px;opacity:.45;transform:scaleX(0);animation:lineGrow .7s 1.1s forwards}
+    @keyframes lineGrow{to{transform:scaleX(1)}}
+    .shimmer{background:linear-gradient(90deg,#fff 0%,var(--c1) 25%,var(--c4) 50%,var(--c1) 75%,#fff 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 4.5s ease-in-out infinite}
+    @keyframes shimmer{0%,100%{background-position:100% 0}50%{background-position:0% 0}}
+
+    .hero-desc{font-size:1.1rem;color:rgba(255,255,255,.48);max-width:540px;margin:28px auto 44px;line-height:1.9;font-weight:300;opacity:0;animation:riseIn .9s .46s forwards}
+    .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:riseIn .9s .62s forwards}
+
+    .btn{padding:16px 38px;border-radius:100px;font-weight:600;font-size:.95rem;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:9px;text-decoration:none;transition:all .4s cubic-bezier(.34,1.56,.64,1);font-family:var(--sans)}
+    .btn-primary{background:var(--g1);color:#fff;box-shadow:0 0 36px rgba(14,165,233,.22);position:relative;overflow:hidden}
+    .btn-primary::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,.12);border-radius:50%;transition:all .5s;transform:translate(-50%,-50%)}
+    .btn-primary:hover::before{width:320px;height:320px}
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 0 52px rgba(14,165,233,.38)}
+    .btn-primary svg{transition:transform .3s}
+    .btn-primary:hover svg{transform:translateX(4px)}
+    .btn-ghost{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1.5px solid rgba(255,255,255,.12);backdrop-filter:blur(10px)}
+    .btn-ghost:hover{border-color:var(--c1);color:#fff;transform:translateY(-2px);background:rgba(14,165,233,.07)}
+
+    @keyframes riseIn{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ── TICKER ── */
+    .ticker{overflow:hidden;padding:24px 0;border-top:1px solid rgba(14,165,233,.1);border-bottom:1px solid rgba(14,165,233,.1);background:rgba(14,165,233,.02)}
+    .ticker-track{display:flex;gap:44px;animation:tickerScroll 28s linear infinite;width:max-content}
+    .ticker-item{display:flex;align-items:center;gap:10px;white-space:nowrap;font-size:.85rem;font-weight:400;color:rgba(255,255,255,.32)}
+    .ticker-item .num{font-family:var(--mono);font-size:1.15rem;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:500}
+    .ticker-sep{width:5px;height:5px;border-radius:50%;background:var(--c1);opacity:.3;flex-shrink:0}
+    @keyframes tickerScroll{to{transform:translateX(-50%)}}
+
+    /* ── GRADIENT BRIDGE ── */
+    .g-bridge{height:180px;background:linear-gradient(180deg,var(--dark) 0%,#F6FAFF 100%);position:relative;z-index:2}
+
+    /* ── LIGHT SECTIONS ── */
+    .light{background:#F6FAFF;position:relative;z-index:2;color:#0F2137}
+
+    /* ── SHARED SECTION WRAPPER ── */
+    .section{max-width:1140px;margin:0 auto;padding:88px 48px}
+    .sec-head{text-align:center;margin-bottom:52px}
+    .overline{font-family:var(--mono);font-size:.7rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--c1);display:block;margin-bottom:12px}
+    .sec-head h2{font-family:var(--serif);font-size:clamp(2.1rem,4vw,3.2rem);font-weight:400;color:#0F2137;letter-spacing:-.02em;line-height:1.1}
+    .sec-head h2 i{font-style:italic}
+    .sec-head p{color:#5A6D82;font-size:1rem;margin-top:12px;font-weight:300}
+
+    /* dark section overrides */
+    .dark-sec{background:var(--dark);color:#fff}
+    .dark-sec .sec-head h2{color:#fff}
+    .dark-sec .sec-head p{color:rgba(255,255,255,.45)}
+
+    /* ── REVEAL ── */
+    .rv{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s cubic-bezier(.4,0,.2,1)}
+    .rv.show{opacity:1;transform:none}
+    .rv-d1{transition-delay:.1s}.rv-d2{transition-delay:.2s}.rv-d3{transition-delay:.3s}.rv-d4{transition-delay:.4s}
+
+    /* ── BENTO CARDS (light sections) ── */
+    .bento-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+    .bc{border-radius:22px;padding:32px;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s}
+    .bc:hover{transform:translateY(-5px)}
+    .bc-7{grid-column:span 7}
+    .bc-5{grid-column:span 5}
+    .bc-4{grid-column:span 4}
+    .bc-8{grid-column:span 8}
+    .bc-6{grid-column:span 6}
+    .bc-soft{background:#fff;border:1px solid rgba(14,165,233,.1);box-shadow:0 4px 28px rgba(14,165,233,.05)}
+    .bc-soft:hover{box-shadow:0 12px 44px rgba(14,165,233,.1)}
+    .bc-navy{background:var(--dark4);color:#fff}
+    .bc-navy .bc-t{color:#fff}
+    .bc-navy .bc-desc{color:rgba(255,255,255,.5)}
+    .bc-navy .bc-ol{color:rgba(255,255,255,.4)}
+    .bc-grad{background:var(--g1);color:#fff}
+    .bc-grad .bc-t,.bc-grad .bc-desc{color:#fff}
+    .bc-grad .bc-t{color:#fff}
+    .bc-grad .bc-desc{opacity:.85}
+    .bc-white{background:#fff;border:1px solid #E8F0F8}
+    .bc-white:hover{box-shadow:0 12px 44px rgba(14,165,233,.1)}
+
+    /* deco shapes */
+    .bc-deco{position:absolute;opacity:.07;pointer-events:none}
+    .bc-deco-c{top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:currentColor}
+    .bc-deco-d{bottom:-30px;left:-30px;width:24px;height:24px;background:currentColor;box-shadow:60px 0 0 currentColor,0 60px 0 currentColor,60px 60px 0 currentColor,120px 0 0 currentColor,0 120px 0 currentColor,120px 60px 0 currentColor,60px 120px 0 currentColor,120px 120px 0 currentColor}
+
+    .bc-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-family:var(--mono);font-weight:600;letter-spacing:.04em;margin-bottom:20px;color:var(--c1)}
+    .bci-1{background:rgba(14,165,233,.1);color:var(--c1)}
+    .bci-2{background:rgba(245,158,11,.1)}
+    .bci-3{background:rgba(139,92,246,.1)}
+    .bci-4{background:rgba(20,184,166,.1)}
+    .bc-ol{font-family:var(--mono);font-size:.68rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--c1);display:block;margin-bottom:10px}
+    .bc-t{font-family:var(--serif);font-size:1.55rem;font-weight:600;color:#0F2137;margin-bottom:10px;line-height:1.2}
+    .bc-desc{font-size:.9rem;color:#5A6D82;line-height:1.78;font-weight:300}
+
+    /* ── DARK BENTO CARDS ── */
+    .d-bento-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .dbc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--g1);opacity:0;transition:opacity .3s}
+    .dbc:hover{background:rgba(14,165,233,.06);border-color:rgba(14,165,233,.18);transform:translateY(-4px)}
+    .dbc:hover::before{opacity:1}
+    .dbc-icon{font-size:2rem;margin-bottom:16px;display:block}
+    .dbc-n{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.3);display:block;margin-bottom:8px}
+    .dbc-t{font-family:var(--serif);font-size:1.3rem;font-weight:600;color:#fff;margin-bottom:9px;line-height:1.2}
+    .dbc-d{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.75;font-weight:300}
+
+    /* ── STEPS ── */
+    .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+    .step{text-align:center;padding:32px 20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:20px;transition:all .3s}
+    .step:hover{background:rgba(14,165,233,.07);border-color:rgba(14,165,233,.16)}
+    .step-n{width:52px;height:52px;border-radius:50%;background:var(--g1);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.4rem;font-weight:600;color:#fff;margin:0 auto 18px;box-shadow:0 0 24px rgba(14,165,233,.3)}
+    .step h4{font-family:var(--serif);font-size:1.2rem;font-weight:600;color:#fff;margin-bottom:7px}
+    .step p{font-size:.86rem;color:rgba(255,255,255,.42);font-weight:300;line-height:1.65}
+
+    /* ── COMPLICATIONS LIST ── */
+    .comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:0}
+    .comp-item{display:flex;gap:14px;padding:20px 22px;background:#fff;border:1px solid #E8F0F8;border-radius:16px;transition:all .25s;align-items:flex-start}
+    .comp-item:hover{border-color:rgba(14,165,233,.25);box-shadow:0 4px 20px rgba(14,165,233,.06);transform:translateX(3px)}
+    .comp-icon{font-size:1.6rem;flex-shrink:0;margin-top:1px}
+    .comp-name{font-weight:600;font-size:.93rem;color:#0F2137;margin-bottom:3px}
+    .comp-desc{font-size:.84rem;color:#5A6D82;line-height:1.65}
+    .dka-callout{background:linear-gradient(135deg,#0F2137,#152C45);border:1px solid rgba(14,165,233,.2);border-radius:22px;padding:36px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
+    .dka-callout.has-img{grid-template-columns:auto 1fr auto;gap:28px}
+    .dka-img{width:360px;height:200px;border-radius:18px;overflow:hidden;flex-shrink:0;box-shadow:0 12px 40px rgba(0,0,0,.35);border:1px solid rgba(14,165,233,.18)}
+    .dka-img img{width:100%;height:100%;object-fit:cover;display:block}
+    .dbc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:30px;transition:all .3s;position:relative;overflow:hidden}
+    .dbc-img{width:100%;height:160px;border-radius:14px;overflow:hidden;margin-bottom:20px;background:radial-gradient(ellipse at center,rgba(14,165,233,.08),rgba(5,13,26,.9));border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center}
+    .dbc-img img{max-width:100%;max-height:100%;width:auto;height:100%;object-fit:contain;display:block;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+    .dbc:hover .dbc-img img{transform:scale(1.06)}
+    .dka-icon{font-size:3.5rem;line-height:1}
+    .dka-h{font-family:var(--serif);font-size:1.35rem;font-weight:600;color:#fff;margin-bottom:8px}
+    .dka-p{font-size:.9rem;color:rgba(255,255,255,.52);line-height:1.78;font-weight:300}
+    .dka-cite{font-size:.74rem;color:rgba(255,255,255,.28);margin-top:12px}
+    .dka-cite a{color:var(--c4);text-decoration:none}
+    .dka-cite a:hover{text-decoration:underline}
+
+    /* ── BARRIER CARDS ── */
+    .barrier-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .bar-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:26px;display:flex;gap:16px;align-items:flex-start;transition:all .3s}
+    .bar-card:hover{background:rgba(14,165,233,.05);border-color:rgba(14,165,233,.16);transform:translateY(-3px)}
+    .bar-icon{width:46px;height:46px;border-radius:12px;background:rgba(14,165,233,.1);display:flex;align-items:center;justify-content:center;font-size:.95rem;font-family:var(--mono);font-weight:600;letter-spacing:.04em;color:var(--c1);flex-shrink:0}
+    .bar-t{font-weight:600;font-size:.94rem;color:#fff;margin-bottom:5px}
+    .bar-d{font-size:.85rem;color:rgba(255,255,255,.42);line-height:1.7;font-weight:300}
+
+    /* ── STRATEGY ROWS ── */
+    .strat-list{display:flex;flex-direction:column}
+    .strat-row{display:flex;gap:32px;align-items:flex-start;padding:28px 0;border-bottom:1px solid rgba(14,165,233,.08);transition:all .3s;cursor:default}
+    .strat-row:last-child{border-bottom:none}
+    .strat-row:hover{padding-left:10px}
+    .strat-row:hover .strat-num{background:var(--g1);color:#fff;box-shadow:0 0 22px rgba(14,165,233,.3)}
+    .strat-num{width:52px;height:52px;border-radius:14px;background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.15);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.95rem;font-weight:500;color:var(--c1);flex-shrink:0;transition:all .3s}
+    .strat-title{font-family:var(--serif);font-size:1.25rem;font-weight:600;color:#fff;margin-bottom:7px}
+    .strat-desc{font-size:.9rem;color:rgba(255,255,255,.45);line-height:1.78;font-weight:300}
+    .strat-tip{margin-top:12px;padding:10px 15px;background:rgba(14,165,233,.07);border-left:2px solid var(--c1);border-radius:0 8px 8px 0;font-size:.82rem;color:rgba(255,255,255,.55);font-weight:400}
+    .strat-tip a{color:var(--c4);text-decoration:none}
+    .strat-tip a:hover{text-decoration:underline}
+
+    /* ── QUIZ ── */
+    .quiz-card{max-width:680px;margin:44px auto 0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:26px;padding:44px}
+    .quiz-bar{height:4px;background:rgba(14,165,233,.12);border-radius:2px;margin-bottom:28px;overflow:hidden}
+    .quiz-bar-fill{height:100%;background:var(--g1);border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+    .quiz-q{font-family:var(--serif);font-size:1.35rem;font-weight:600;color:#fff;margin-bottom:22px;line-height:1.4}
+    .quiz-opts{display:flex;flex-direction:column;gap:9px}
+    .qo{text-align:left;padding:14px 18px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.08);border-radius:12px;cursor:pointer;font-size:.9rem;color:rgba(255,255,255,.55);font-family:var(--sans);font-weight:400;transition:all .22s}
+    .qo:hover{border-color:rgba(14,165,233,.3);color:#fff;background:rgba(14,165,233,.06);transform:translateX(4px)}
+    .qo.ok{border-color:var(--c3);background:rgba(20,184,166,.09);color:var(--c4)}
+    .qo.no{border-color:#EF4444;background:rgba(239,68,68,.07);color:#FCA5A5}
+    .quiz-fb{margin-top:16px;padding:13px 17px;border-radius:11px;font-size:.88rem;display:none;line-height:1.65}
+    .quiz-fb.show{display:block}
+    .quiz-fb.ok{background:rgba(20,184,166,.09);color:var(--c4);border:1px solid rgba(20,184,166,.2)}
+    .quiz-fb.no{background:rgba(239,68,68,.07);color:#FCA5A5;border:1px solid rgba(239,68,68,.18)}
+    .quiz-bot{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+    .quiz-prog{font-family:var(--mono);font-size:.78rem;color:rgba(255,255,255,.3)}
+    .quiz-nxt{display:none;padding:11px 24px;background:var(--g1);color:#fff;border-radius:100px;border:none;cursor:pointer;font-weight:600;font-size:.88rem;font-family:var(--sans);transition:all .3s;box-shadow:0 0 18px rgba(14,165,233,.2)}
+    .quiz-nxt.show{display:inline-flex;align-items:center;gap:5px}
+    .quiz-nxt:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(14,165,233,.36)}
+
+    /* ── RESOURCES (light) ── */
+    .res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .res-card{background:#fff;border:1px solid #E8F0F8;border-radius:20px;padding:24px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:9px;transition:all .3s}
+    .res-card:hover{transform:translateY(-4px);border-color:rgba(14,165,233,.25);box-shadow:0 10px 36px rgba(14,165,233,.08)}
+    .res-org{font-family:var(--mono);font-size:.68rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--c1)}
+    .res-title{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:#0F2137;line-height:1.3}
+    .res-desc{font-size:.84rem;color:#5A6D82;line-height:1.65;flex:1;font-weight:300}
+    .res-link{font-size:.8rem;font-weight:600;color:var(--c1);display:inline-flex;align-items:center;gap:3px}
+    .res-link::after{content:'↗'}
+    .res-img{width:100%;aspect-ratio:16/9;border-radius:9px;object-fit:contain;background:#F6FAFF;padding:10px}
+
+    /* ── CTA BOX ── */
+    .cta-box{background:linear-gradient(135deg,var(--dark3),var(--dark4));border:1px solid rgba(14,165,233,.15);border-radius:28px;padding:72px;text-align:center;position:relative;overflow:hidden}
+    .cta-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 50% 0%,rgba(14,165,233,.08),transparent)}
+    .cta-box h2{font-family:var(--serif);font-size:clamp(1.9rem,3.5vw,2.9rem);font-weight:400;color:#fff;margin-bottom:12px;position:relative}
+    .cta-box h2 i{font-style:italic}
+    .cta-box p{color:rgba(255,255,255,.48);font-size:1rem;max-width:460px;margin:0 auto 32px;line-height:1.8;font-weight:300;position:relative}
+    .cta-box .btn-primary{position:relative}
+
+    /* ── STATS STRIP ── */
+    .stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(14,165,233,.1);border-radius:18px;overflow:hidden;margin:0 0 52px}
+    .stat-item{background:rgba(255,255,255,.03);padding:30px 24px;text-align:center}
+    .stat-num{font-family:var(--serif);font-size:2.4rem;font-weight:400;font-style:italic;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+    .stat-lbl{font-size:.82rem;color:rgba(255,255,255,.38);margin-top:6px;font-weight:300;line-height:1.5}
+
+    /* ── TARGET PATIENT CARD ── */
+    .target-band{background:var(--g1);border-radius:22px;padding:48px 52px;margin-bottom:44px;position:relative;overflow:hidden}
+    .target-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 100% at 100% 50%,rgba(255,255,255,.1),transparent)}
+    .target-band::after{content:'🎓';position:absolute;right:40px;bottom:-10px;font-size:7rem;opacity:.12;line-height:1;pointer-events:none}
+    .target-band h3{font-family:var(--serif);font-size:1.9rem;font-weight:400;color:#fff;margin-bottom:8px}
+    .target-band h3 i{font-style:italic}
+    .target-band p{font-size:.97rem;color:rgba(255,255,255,.78);max-width:540px;line-height:1.82;font-weight:300}
+    .target-badge{display:inline-block;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);padding:5px 16px;border-radius:100px;font-size:.78rem;font-weight:500;color:#fff;margin-bottom:16px;border:1px solid rgba(255,255,255,.25);letter-spacing:.04em}
+
+    /* ── FOOTER ── */
+    .footer{background:var(--dark2);border-top:1px solid rgba(14,165,233,.08);padding:52px 52px 36px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px}
+    .footer-brand h4{font-family:var(--serif);font-size:1.4rem;font-weight:600;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+    .footer-brand p{font-size:.84rem;color:rgba(255,255,255,.35);line-height:1.75;max-width:230px;font-weight:300}
+    .footer-col h5{font-weight:600;font-size:.87rem;color:rgba(255,255,255,.7);margin-bottom:14px;letter-spacing:.02em}
+    .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .footer-col ul a{color:rgba(255,255,255,.35);font-size:.84rem;text-decoration:none;font-weight:300;transition:color .2s}
+    .footer-col ul a:hover{color:var(--c1)}
+    .footer-bottom{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.05);padding-top:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+    .footer-bottom p{font-size:.76rem;color:rgba(255,255,255,.2)}
+    .footer-bottom a{color:rgba(14,165,233,.6);text-decoration:none}
+    .footer-bottom a:hover{color:var(--c1)}
+
+    /* ── THEME TOGGLE ── */
+    .theme-tgl{position:fixed;bottom:28px;right:28px;z-index:500;width:50px;height:50px;border-radius:50%;background:var(--dark2);border:1px solid rgba(14,165,233,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;box-shadow:0 0 24px rgba(14,165,233,.1);transition:all .3s}
+    .theme-tgl:hover{transform:scale(1.12) rotate(18deg);border-color:var(--c1);box-shadow:0 0 32px rgba(14,165,233,.22)}
+
+    /* ── TYPING EFFECT ── */
+    .typed-text{color:#fff;display:inline;-webkit-text-fill-color:#fff}
+    .typed-text::after{content:'|';display:inline-block;color:var(--c4);-webkit-text-fill-color:var(--c4);animation:blink .72s step-end infinite;margin-left:2px}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+    /* ── LIGHT THEME — GeneShield style: soft blue-white, navy ink ── */
+    [data-theme="light"] body{background:#FBFDFF;color:#0F2137}
+
+    /* Hero: light gradient exactly like GeneShield */
+    [data-theme="light"] .hero{background:linear-gradient(180deg,#EFF8FF 0%,#F0FDFA 30%,#FBFDFF 70%)}
+    [data-theme="light"] .hero-bg::before{background:conic-gradient(from 180deg at 50% 50%,rgba(14,165,233,0.07) 0deg,rgba(6,182,212,0.04) 90deg,rgba(20,184,166,0.07) 180deg,rgba(139,92,246,0.03) 270deg,rgba(14,165,233,0.07) 360deg)}
+    [data-theme="light"] .hero-bg::after{background:radial-gradient(ellipse 85% 65% at 50% 40%,transparent 0%,#FBFDFF 100%)}
+    [data-theme="light"] #dna-canvas{opacity:0.75}
+    [data-theme="light"] .hero h1{color:#0F2137}
+    [data-theme="light"] .hero-grid{opacity:0.03;background-image:radial-gradient(circle,#0F2137 0.8px,transparent 0.8px);background-size:28px 28px;background-image:linear-gradient(rgba(15,33,55,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(15,33,55,.3) 1px,transparent 1px)}
+    [data-theme="light"] .hero-tag{background:rgba(255,255,255,0.7);border-color:rgba(14,165,233,0.2);color:var(--c1);box-shadow:0 2px 12px rgba(14,165,233,0.06)}
+    [data-theme="light"] .hero-desc{color:#5A6D82}
+    [data-theme="light"] .hero-glow-l{opacity:0.5}
+    [data-theme="light"] .hero-glow-r{opacity:0.5}
+    [data-theme="light"] .shimmer{background:linear-gradient(90deg,#0F2137 0%,var(--c1) 30%,var(--c4) 50%,var(--c1) 70%,#0F2137 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 5s ease-in-out infinite}
+    [data-theme="light"] .typed-text{color:#0F2137;-webkit-text-fill-color:#0F2137}
+    [data-theme="light"] .typed-text::after{color:var(--c1);-webkit-text-fill-color:var(--c1)}
+    [data-theme="light"] .btn-ghost{background:#fff;color:#5A6D82;border:2px solid #E2E8F0}
+    [data-theme="light"] .btn-ghost:hover{border-color:var(--c1);color:var(--c1);transform:translateY(-2px);background:#fff}
+
+    /* Ticker */
+    [data-theme="light"] .ticker{background:rgba(14,165,233,0.015);border-color:#E8F0F8}
+    [data-theme="light"] .ticker-item{color:#94A3B8;font-weight:600}
+    [data-theme="light"] .ticker-item .num{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    [data-theme="light"] .ticker-sep{background:var(--c1);opacity:.3}
+
+    /* Bridge */
+    [data-theme="light"] .g-bridge{background:linear-gradient(180deg,#FBFDFF 0%,#EFF8FF 50%,#FBFDFF 100%)}
+
+    /* Light content sections */
+    [data-theme="light"] .light{background:#FBFDFF}
+    [data-theme="light"] .sec-head h2{color:#0F2137}
+    [data-theme="light"] .sec-head p{color:#7B8FA3}
+    [data-theme="light"] .overline{color:var(--c1)}
+    [data-theme="light"] .bc-ol{color:var(--c1)}
+    [data-theme="light"] .bc-t{color:#0F2137}
+    [data-theme="light"] .bc-desc{color:#64748B}
+
+    /* Bento cards — GeneShield exact style */
+    [data-theme="light"] .bc-soft{background:linear-gradient(145deg,#EFF8FF,#F0FDFA);border-color:#D6EAF5}
+    [data-theme="light"] .bc-soft:hover{box-shadow:0 20px 60px rgba(14,165,233,0.1);border-color:rgba(14,165,233,0.2)}
+
+    /* ── TYPES IMAGE ROW ── */
+    .types-imgs{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:22px}
+
+    /* ── BENTO IMAGE CARD ── */
+    .bc-image{padding:0;overflow:hidden;position:relative;min-height:280px;border:1px solid rgba(14,165,233,.12);box-shadow:0 4px 28px rgba(14,165,233,.05);background:linear-gradient(145deg,#EFF8FF,#F0FDFA)}
+
+    /* ── SYMPTOMS INFOGRAPHIC FRAME (sits on dark section) ── */
+    .symp-frame{position:relative;margin:28px auto 36px;border-radius:22px;overflow:hidden;background:linear-gradient(145deg,#EFF8FF,#F0FDFA);border:1px solid rgba(14,165,233,.18);box-shadow:0 12px 44px rgba(0,0,0,.25);max-width:560px}
+    .symp-frame img{display:block;width:100%;height:auto}
+    .symp-cap{position:absolute;top:18px;left:22px;font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(14,165,233,.85);background:rgba(255,255,255,.92);padding:6px 12px;border-radius:100px;backdrop-filter:blur(8px)}
+    .bc-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:28px;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+    .bc-image:hover{box-shadow:0 20px 60px rgba(14,165,233,.12);border-color:rgba(14,165,233,.22)}
+    .bc-image:hover img{transform:scale(1.04)}
+    .bc-image-cap{position:absolute;left:24px;bottom:20px;z-index:2;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(14,165,233,.7)}
+    .types-img{grid-column:span 4;position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/3;background:linear-gradient(145deg,#EFF8FF,#F0FDFA);border:1px solid #D6EAF5;box-shadow:0 4px 28px rgba(14,165,233,.05);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
+    .types-img:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(14,165,233,.12);border-color:rgba(14,165,233,.2)}
+    .types-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+    .types-img:hover img{transform:scale(1.04)}
+    .types-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(5,13,26,.55) 100%);pointer-events:none}
+    .types-img-cap{position:absolute;left:18px;right:18px;bottom:16px;z-index:2;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#fff;opacity:.95}
+    @media (max-width:900px){.types-img{grid-column:span 1}.types-imgs{grid-template-columns:1fr}}
+    [data-theme="light"] .bc-white{background:rgba(255,255,255,0.85);backdrop-filter:blur(16px);border-color:#E2E8F0}
+    [data-theme="light"] .bc-white:hover{box-shadow:0 20px 60px rgba(14,165,233,0.08);border-color:rgba(14,165,233,0.15)}
+    [data-theme="light"] .bc-navy{background:#0F2137;color:#fff}
+
+    /* Dark alternating sections — same navy as GeneShield */
+    [data-theme="light"] .dark-sec{background:#0F2137}
+    [data-theme="light"] .dark-sec .sec-head h2{color:#fff}
+    [data-theme="light"] .dark-sec .sec-head p{color:rgba(255,255,255,0.45)}
+    [data-theme="light"] .dark-sec .overline{color:var(--c5)}
+    [data-theme="light"] .dbc{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.07)}
+    [data-theme="light"] .dbc:hover{background:rgba(14,165,233,0.06);border-color:rgba(14,165,233,0.18)}
+    [data-theme="light"] .dbc-t{color:#fff}
+    [data-theme="light"] .dbc-d{color:rgba(255,255,255,0.48)}
+    [data-theme="light"] .dbc-n{color:rgba(255,255,255,0.28)}
+    [data-theme="light"] .stats-strip{background:rgba(14,165,233,0.07)}
+    [data-theme="light"] .stat-item{background:rgba(255,255,255,0.03)}
+    [data-theme="light"] .stat-lbl{color:rgba(255,255,255,0.42)}
+    [data-theme="light"] .step{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.06)}
+    [data-theme="light"] .step h4{color:#fff}
+    [data-theme="light"] .step p{color:rgba(255,255,255,0.44)}
+    [data-theme="light"] .bar-card{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.07)}
+    [data-theme="light"] .bar-card:hover{background:rgba(14,165,233,0.06);border-color:rgba(14,165,233,0.18)}
+    [data-theme="light"] .bar-t{color:#fff}
+    [data-theme="light"] .bar-d{color:rgba(255,255,255,0.45)}
+    [data-theme="light"] .bar-icon{background:rgba(14,165,233,0.12)}
+    [data-theme="light"] .strat-row{border-color:rgba(14,165,233,0.08)}
+    [data-theme="light"] .strat-row:hover .strat-num{background:var(--g1);color:#fff}
+    [data-theme="light"] .strat-num{background:rgba(14,165,233,0.08);border-color:rgba(14,165,233,0.15)}
+    [data-theme="light"] .strat-title{color:#fff}
+    [data-theme="light"] .strat-desc{color:rgba(255,255,255,0.46)}
+    [data-theme="light"] .strat-tip{background:rgba(14,165,233,0.08);border-color:var(--c1);color:rgba(255,255,255,0.58)}
+    [data-theme="light"] .strat-tip a{color:var(--c4)}
+    [data-theme="light"] .quiz-card{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08)}
+    [data-theme="light"] .quiz-q{color:#fff}
+    [data-theme="light"] .quiz-bar{background:rgba(14,165,233,0.1)}
+    [data-theme="light"] .quiz-prog{color:rgba(255,255,255,0.32)}
+    [data-theme="light"] .qo{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.56)}
+    [data-theme="light"] .qo:hover{color:#fff;border-color:rgba(14,165,233,0.35);background:rgba(14,165,233,0.07)}
+    [data-theme="light"] .dka-callout{background:linear-gradient(135deg,#152C45,#1A3654)}
+    [data-theme="light"] .target-band{box-shadow:0 8px 40px rgba(14,165,233,0.15)}
+
+    /* Resources — clean white cards */
+    [data-theme="light"] .res-card{background:rgba(255,255,255,0.85);border-color:#E2E8F0;box-shadow:0 2px 12px rgba(14,165,233,0.04)}
+    [data-theme="light"] .res-card:hover{border-color:rgba(14,165,233,0.2);box-shadow:0 10px 36px rgba(14,165,233,0.09)}
+    [data-theme="light"] .res-title{color:#0F2137}
+    [data-theme="light"] .res-desc{color:#64748B}
+    [data-theme="light"] .res-org{color:var(--c1)}
+    [data-theme="light"] .res-link{color:var(--c1)}
+    [data-theme="light"] .res-img{background:#EFF8FF}
+    [data-theme="light"] .cta-box{background:#0F2137;border-color:rgba(14,165,233,0.08)}
+
+    /* Footer — GeneShield style: simple, navy text on near-white */
+    [data-theme="light"] .footer{background:#FBFDFF;border-color:#E8F0F8}
+    [data-theme="light"] .footer-brand h4{color:#0F2137}
+    [data-theme="light"] .footer-brand p{color:#64748B}
+    [data-theme="light"] .footer-col h5{color:#0F2137}
+    [data-theme="light"] .footer-col ul a{color:#64748B}
+    [data-theme="light"] .footer-col ul a:hover{color:var(--c1)}
+    [data-theme="light"] .footer-bottom p{color:#94A3B8}
+    [data-theme="light"] .footer-bottom a{color:var(--c1)}
+
+    /* Nav — white glass on scroll, transparent on hero */
+    [data-theme="light"] .nav.solid{background:rgba(251,253,255,0.88);border-color:rgba(14,165,233,0.08);backdrop-filter:blur(20px);box-shadow:0 4px 30px rgba(14,165,233,0.04)}
+    [data-theme="light"] .nav.solid .nav-wordmark{color:#0F2137}
+    [data-theme="light"] .nav.solid .nav-link{color:#64748B}
+    [data-theme="light"] .nav.solid .nav-link:hover{color:var(--c1);background:rgba(14,165,233,0.05)}
+    [data-theme="light"] .nav:not(.solid) .nav-wordmark{color:#0F2137}
+    [data-theme="light"] .nav:not(.solid) .nav-link{color:#5A6D82}
+    [data-theme="light"] .nav:not(.solid) .nav-link:hover{color:var(--c1);background:rgba(14,165,233,0.05)}
+    [data-theme="light"] .nav-hbg span{background:#0F2137}
+    [data-theme="light"] .drw{background:#FBFDFF;border-color:#E8F0F8}
+    [data-theme="light"] .drw .nav-link{color:#64748B}
+    [data-theme="light"] .drw-close{color:#64748B}
+    [data-theme="light"] .theme-tgl{background:#fff;border-color:#E2E8F0;box-shadow:0 2px 12px rgba(14,165,233,0.07)}
+    [data-theme="light"] .cursor-glow{background:radial-gradient(circle,rgba(14,165,233,0.06) 0%,transparent 70%)}
+
+    /* ── MOBILE DRAWER ── */
+    .drw{position:fixed;top:0;right:-100%;bottom:0;width:276px;background:var(--dark2);z-index:300;padding:68px 24px 24px;border-left:1px solid rgba(14,165,233,.1);transition:right .3s ease;display:flex;flex-direction:column;gap:5px}
+    .drw.open{right:0}
+    .drw .nav-link{font-size:.95rem;padding:13px 16px;border-radius:12px;display:block;color:rgba(255,255,255,.6)}
+    .drw-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:rgba(255,255,255,.5)}
+    .ovl{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:250;display:none;backdrop-filter:blur(4px)}
+    .ovl.show{display:block}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:960px){
+      .nav{padding:16px 22px}.nav.solid{padding:10px 22px}
+      .nav-links{display:none}.nav-cta{display:none}.nav-hbg{display:flex}
+      .hero{padding:110px 24px 70px}
+      .section{padding:64px 24px}
+      .bento-grid{grid-template-columns:1fr}.bc-7,.bc-5,.bc-4,.bc-8,.bc-6{grid-column:span 1}
+      .d-bento-grid{grid-template-columns:1fr}
+      .comp-grid{grid-template-columns:1fr}
+      .dka-callout{grid-template-columns:1fr;text-align:center}
+      .dka-callout.has-img{grid-template-columns:1fr}
+      .dka-img{width:100%;max-width:420px;height:auto;aspect-ratio:2/1;margin:0 auto}
+      .steps-grid{grid-template-columns:1fr 1fr}
+      .barrier-grid{grid-template-columns:1fr}
+      .stats-strip{grid-template-columns:1fr 1fr}
+      .res-grid{grid-template-columns:1fr}
+      .footer{grid-template-columns:1fr 1fr;gap:28px}
+      .footer-brand{grid-column:1/-1}
+      .footer-bottom{flex-direction:column;text-align:center}
+      .cta-box{padding:48px 28px}
+      .target-band{padding:36px 28px}
+    }
+    @media(max-width:560px){
+      .hero h1{font-size:2.8rem}
+      .steps-grid{grid-template-columns:1fr}
+      .stats-strip{grid-template-columns:1fr 1fr}
+      .footer{grid-template-columns:1fr}
+      .quiz-card{padding:28px}
+    }
+    @media print{
+      .theme-tgl,.ovl,.drw,nav,.cursor-glow{display:none}
+      .rv{opacity:1;transform:none}
+      .g-bridge{display:none}
+    }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to main content</a>
+<div class="cursor-glow" id="glow" aria-hidden="true"></div>
+
+<div class="ovl" id="ovl" onclick="closeD()" aria-hidden="true"></div>
+<nav class="drw" id="drw" role="navigation" aria-label="Mobile navigation">
+  <button class="drw-close" onclick="closeD()" aria-label="Close menu">×</button>
+  <a href="#about" class="nav-link" onclick="closeD()">About</a>
+  <a href="#types" class="nav-link" onclick="closeD()">Types</a>
+  <a href="#complications" class="nav-link" onclick="closeD()">Complications</a>
+  <a href="#importance" class="nav-link" onclick="closeD()">Adherence</a>
+  <a href="#patients" class="nav-link" onclick="closeD()">Barriers</a>
+  <a href="#strategies" class="nav-link" onclick="closeD()">Strategies</a>
+  <a href="#quiz" class="nav-link" onclick="closeD()">Quiz</a>
+  <a href="#resources" class="nav-link" onclick="closeD()">Resources</a>
+</nav>
+
+<!-- NAV -->
+<nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-brand" aria-label="AdhereMed home">
+    <div class="nav-logo" aria-hidden="true">💊</div>
+    <span class="nav-wordmark">AdhereMed</span>
+  </a>
+  <div class="nav-links" role="menubar">
+    <a href="#about" class="nav-link" role="menuitem">About</a>
+    <a href="#types" class="nav-link" role="menuitem">Types</a>
+    <a href="#complications" class="nav-link" role="menuitem">Complications</a>
+    <a href="#importance" class="nav-link" role="menuitem">Adherence</a>
+    <a href="#patients" class="nav-link" role="menuitem">Barriers</a>
+    <a href="#strategies" class="nav-link" role="menuitem">Strategies</a>
+    <a href="#quiz" class="nav-link" role="menuitem">Quiz</a>
+  </div>
+  <div class="nav-right">
+    <a href="#resources" class="nav-cta" aria-label="View resources">Resources <svg width="13" height="13" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></a>
+    <button class="nav-hbg" id="hbg" aria-label="Open menu" aria-expanded="false" onclick="openD()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero" role="banner">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-glow-l" aria-hidden="true"></div>
+  <div class="hero-glow-r" aria-hidden="true"></div>
+  <canvas id="dna-canvas" aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0.55"></canvas>
+
+  <div class="hero-content">
+    <div class="hero-tag">
+      <div class="hero-tag-dot" aria-hidden="true"></div>
+      <span>Medication Adherence — Type 1 and Type 2 Diabetes</span>
+    </div>
+    <h1><i class="shimmer">Take Your Meds.</i><br>Stay <span id="typed-hero" class="typed-text"></span></h1>
+    <p class="hero-desc">One pill a day keeps the crisis away. A simple guide to medication adherence for type 1 and type 2 diabetes.</p>
+    <div class="hero-actions">
+      <a href="#importance" class="btn btn-primary" aria-label="Learn why adherence matters">
+        Why It Matters
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+      <a href="#strategies" class="btn btn-ghost">See 7 Strategies</a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker" aria-label="Key diabetes statistics" role="complementary">
+  <div class="ticker-track" aria-hidden="true">
+    <div class="ticker-item"><span class="num">537M</span> adults living with diabetes globally</div><div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="num">~50%</span> of patients don't adhere to their medication</div><div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="num">3×</span> higher hospitalisation risk without adherence</div><div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="num">1.5M</span> deaths attributed to diabetes yearly</div><div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="num">80%</span> of Type 2 cases linked to lifestyle factors</div><div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="num">1 in 2</span> people with diabetes are undiagnosed</div><div class="ticker-sep"></div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item"><span class="num">537M</span> adults living with diabetes globally</div><div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="num">~50%</span> of patients don't adhere to their medication</div><div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="num">3×</span> higher hospitalisation risk without adherence</div><div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="num">1.5M</span> deaths attributed to diabetes yearly</div><div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="num">80%</span> of Type 2 cases linked to lifestyle factors</div><div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="num">1 in 2</span> people with diabetes are undiagnosed</div><div class="ticker-sep"></div>
+  </div>
+</div>
+
+<!-- GRADIENT BRIDGE TO LIGHT -->
+<div class="g-bridge" aria-hidden="true"></div>
+
+<!-- ABOUT + TYPES (LIGHT) -->
+<div class="light">
+
+  <!-- ABOUT -->
+  <section id="about" aria-labelledby="about-h">
+    <div class="section">
+      <div class="sec-head rv">
+        <span class="overline">Understanding Diabetes</span>
+        <h2 id="about-h">What is <i>Diabetes?</i></h2>
+        <p>A chronic condition — and why your medication is the single most important tool you have.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="bc bc-7 bc-soft rv">
+          <div class="bc-deco bc-deco-c" style="color:var(--c1)" aria-hidden="true"></div>
+          <div class="bc-icon bci-1" aria-hidden="true"></div>
+          <span class="bc-ol">The Condition</span>
+          <div class="bc-t">What happens in your body</div>
+          <div class="bc-desc">Diabetes is a chronic condition where blood glucose (blood sugar) is persistently too high. It develops when the pancreas fails to produce enough insulin, produces none at all, or when the body doesn't respond properly to the insulin it does produce. Without insulin, cells cannot absorb glucose for energy — and blood sugar accumulates to dangerous levels.</div>
+        </div>
+        <div class="bc bc-5 bc-navy rv rv-d1">
+          <div class="bc-deco bc-deco-d" style="color:#fff" aria-hidden="true"></div>
+          <div class="bc-icon bci-2" aria-hidden="true"></div>
+          <span class="bc-ol">Medication Adherence</span>
+          <div class="bc-t">What it actually means</div>
+          <div class="bc-desc">Medication adherence is the extent to which your medication-taking behaviour matches agreed recommendations from your healthcare provider. Right time. Right dose. Right instructions. Right duration — even when you feel completely fine.</div>
+        </div>
+        <div class="bc bc-4 bc-grad rv rv-d2">
+          <div class="bc-icon" style="background:rgba(255,255,255,.18);color:#fff;font-size:1.4rem" aria-hidden="true"></div>
+          <span class="bc-ol" style="color:rgba(255,255,255,.65)">Global Scale</span>
+          <div class="bc-t" style="color:#fff">422 Million</div>
+          <div class="bc-desc" style="color:rgba(255,255,255,.8)">People worldwide living with diabetes as of 2022 — with numbers rising every year (WHO).</div>
+        </div>
+        <div class="bc bc-8 bc-white rv rv-d3">
+          <div class="bc-deco bc-deco-c" style="color:var(--c3)" aria-hidden="true"></div>
+          <div class="bc-icon bci-4" aria-hidden="true"></div>
+          <span class="bc-ol">The Core Truth</span>
+          <div class="bc-t">Feeling fine doesn't mean cured</div>
+          <div class="bc-desc">One of the most dangerous misconceptions — especially among young adults — is stopping medication when you feel well. That feeling is often proof the medication is working. Stopping disrupts glucose control and can trigger rapid, life-threatening complications. Consistent adherence is what keeps you well.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPES -->
+  <section id="types" aria-labelledby="types-h">
+    <div class="section" style="padding-top:0">
+      <div class="sec-head rv">
+        <span class="overline">Classification</span>
+        <h2 id="types-h">Three Main <i>Types</i></h2>
+        <p>Understanding your type defines your treatment plan and adherence strategy.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="bc bc-4 bc-soft rv">
+          <div class="bc-icon bci-1" aria-hidden="true">01</div>
+          <span class="bc-ol">Type 01</span>
+          <div class="bc-t">Type 1 Diabetes</div>
+          <div class="bc-desc">An autoimmune disease where the immune system attacks and destroys insulin-producing beta cells in the pancreas. Produces little or no insulin. Requires lifelong insulin therapy to survive. Not caused by diet or lifestyle.</div>
+        </div>
+        <div class="bc bc-4 bc-soft rv rv-d1">
+          <div class="bc-icon bci-2" aria-hidden="true">02</div>
+          <span class="bc-ol">Type 02</span>
+          <div class="bc-t">Type 2 Diabetes</div>
+          <div class="bc-desc">The most common form. The body doesn't produce enough insulin or can't use it effectively (insulin resistance). Strongly linked to lifestyle factors though genetics play a role. Managed through oral medication, insulin, or both.</div>
+        </div>
+        <div class="bc bc-4 bc-soft rv rv-d2">
+          <div class="bc-icon bci-4" aria-hidden="true">03</div>
+          <span class="bc-ol">Pregnancy-Related</span>
+          <div class="bc-t">Gestational Diabetes</div>
+          <div class="bc-desc">Occurs during pregnancy when placental hormones cause insulin resistance. Usually resolves after birth but significantly raises the mother's lifetime risk of developing Type 2 diabetes. Requires careful monitoring.</div>
+        </div>
+      </div>
+      <div class="types-imgs rv">
+        <figure class="types-img">
+          <img src="images/type-1-diabetes.jpeg" alt="Diagram showing healthy versus destroyed insulin-producing pancreatic cells in Type 1 diabetes"/>
+          <figcaption class="types-img-cap">Type 01 — Autoimmune Response</figcaption>
+        </figure>
+        <figure class="types-img rv-d1">
+          <img src="images/type-2-diabetes.jpeg" alt="Waistline being measured, representing lifestyle factors associated with Type 2 diabetes"/>
+          <figcaption class="types-img-cap">Type 02 — Insulin Resistance</figcaption>
+        </figure>
+        <figure class="types-img rv-d2">
+          <img src="images/gestational.jpeg" alt="Pregnant person holding a glucose meter showing a blood sugar reading"/>
+          <figcaption class="types-img-cap">Gestational Diabetes</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO CAROUSEL -->
+  <section id="videos" aria-labelledby="vid-h">
+    <div class="section" style="padding-top:0;padding-bottom:88px">
+      <div class="sec-head rv">
+        <span class="overline">Watch &amp; Learn</span>
+        <h2 id="vid-h">Real Talk on <i>Medication</i></h2>
+        <p>Short videos to help you understand why staying on track with your medication truly matters.</p>
+      </div>
+
+      <div class="vid-carousel rv">
+        <!-- LEFT ARROW -->
+        <button class="vid-arrow vid-prev" id="vidPrev" aria-label="Previous video">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+
+        <div class="vid-stage">
+
+          <!-- SLIDE 1 -->
+          <div class="vid-slide active" id="vslide-0">
+            <div class="vid-player-box" id="vbox-0">
+              <!-- thumbnail shown first, replaced by iframe on click -->
+              <div class="vid-thumb" id="vthumb-0" onclick="playVid(0,'3FzuTWCj9gE')" role="button" tabindex="0" aria-label="Play video 1" onkeydown="if(event.key==='Enter')playVid(0,'3FzuTWCj9gE')">
+                <img src="https://img.youtube.com/vi/3FzuTWCj9gE/maxresdefault.jpg" alt="Video 1 thumbnail" onerror="this.src='https://img.youtube.com/vi/3FzuTWCj9gE/hqdefault.jpg'"/>
+                <div class="vid-play-btn" aria-hidden="true">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="vid-caption">
+              <span class="vid-tag">Video 1 of 3</span>
+              <p class="vid-title">Why Medication Adherence Saves Lives</p>
+            </div>
+          </div>
+
+          <!-- SLIDE 2 -->
+          <div class="vid-slide" id="vslide-1">
+            <div class="vid-player-box" id="vbox-1">
+              <div class="vid-thumb" id="vthumb-1" onclick="playVid(1,'zOJaqMcZe9U')" role="button" tabindex="0" aria-label="Play video 2" onkeydown="if(event.key==='Enter')playVid(1,'zOJaqMcZe9U')">
+                <img src="https://img.youtube.com/vi/zOJaqMcZe9U/maxresdefault.jpg" alt="Video 2 thumbnail" onerror="this.src='https://img.youtube.com/vi/zOJaqMcZe9U/hqdefault.jpg'"/>
+                <div class="vid-play-btn" aria-hidden="true">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="vid-caption">
+              <span class="vid-tag">Video 2 of 3</span>
+              <p class="vid-title">Staying Consistent With Your Treatment</p>
+            </div>
+          </div>
+
+          <!-- SLIDE 3 -->
+          <div class="vid-slide" id="vslide-2">
+            <div class="vid-player-box" id="vbox-2">
+              <div class="vid-thumb" id="vthumb-2" onclick="playVid(2,'scqr241O9mc')" role="button" tabindex="0" aria-label="Play video 3" onkeydown="if(event.key==='Enter')playVid(2,'scqr241O9mc')">
+                <img src="https://img.youtube.com/vi/scqr241O9mc/maxresdefault.jpg" alt="Video 3 thumbnail" onerror="this.src='https://img.youtube.com/vi/scqr241O9mc/hqdefault.jpg'"/>
+                <div class="vid-play-btn" aria-hidden="true">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="vid-caption">
+              <span class="vid-tag">Video 3 of 3</span>
+              <p class="vid-title">Managing Diabetes Day by Day</p>
+            </div>
+          </div>
+
+          <!-- DOTS -->
+          <div class="vid-dots">
+            <button class="vid-dot active" id="dot0" onclick="goVid(0)" aria-label="Video 1"></button>
+            <button class="vid-dot" id="dot1" onclick="goVid(1)" aria-label="Video 2"></button>
+            <button class="vid-dot" id="dot2" onclick="goVid(2)" aria-label="Video 3"></button>
+          </div>
+        </div>
+
+        <!-- RIGHT ARROW -->
+        <button class="vid-arrow vid-next" id="vidNext" aria-label="Next video">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- /light -->
+
+<!-- COMPLICATIONS (DARK) -->
+<div class="dark-sec" id="complications" aria-labelledby="comp-h">
+  <div class="section">
+    <div class="sec-head rv">
+      <span class="overline">What's at Stake</span>
+      <h2 id="comp-h">The Real Cost of <i>Skipping</i></h2>
+      <p>A missed dose feels harmless in the moment. Over months and years, uncontrolled glucose silently destroys organs.</p>
+    </div>
+    <div class="stats-strip rv">
+      <div class="stat-item"><div class="stat-num">#1</div><div class="stat-lbl">Cause of death in diabetics: cardiovascular disease</div></div>
+      <div class="stat-item"><div class="stat-num">40%</div><div class="stat-lbl">Of people with diabetes will develop kidney disease</div></div>
+      <div class="stat-item"><div class="stat-num">2–3×</div><div class="stat-lbl">Higher stroke risk in people with uncontrolled diabetes</div></div>
+      <div class="stat-item"><div class="stat-num">80%</div><div class="stat-lbl">Of lower limb amputations are diabetes-related</div></div>
+    </div>
+    <div class="comp-grid rv">
+      <div class="dbc">
+        <div class="dbc-img"><img src="images/cardiovascular.png" alt="Anatomical cross-section of a human heart showing internal chambers and valves"/></div>
+        <span class="dbc-icon" aria-hidden="true"></span>
+        <span class="dbc-n">Complication 01</span>
+        <div class="dbc-t">Cardiovascular Disease</div>
+        <div class="dbc-d">High blood glucose damages artery walls, raising risk of heart attack, stroke, and peripheral artery disease. The leading cause of death among people with diabetes globally.</div>
+      </div>
+      <div class="dbc">
+        <div class="dbc-img"><img src="images/kidney-damage.png" alt="Anatomical diagram of a kidney showing internal structure and blood vessels"/></div>
+        <span class="dbc-icon" aria-hidden="true"></span>
+        <span class="dbc-n">Complication 02</span>
+        <div class="dbc-t">Kidney Damage</div>
+        <div class="dbc-d">Chronic hyperglycaemia damages the kidney's filtering vessels, progressively reducing function. Can advance to kidney failure requiring dialysis or transplant.</div>
+      </div>
+      <div class="dbc">
+        <div class="dbc-img"><img src="images/retinopathy.png" alt="Anatomical rendering of a human eye showing the iris and sclera"/></div>
+        <span class="dbc-icon" aria-hidden="true"></span>
+        <span class="dbc-n">Complication 03</span>
+        <div class="dbc-t">Retinopathy</div>
+        <div class="dbc-d">Weakened retinal blood vessels cause blurred vision and can lead to permanent blindness. Diabetes is one of the world's leading causes of preventable blindness.</div>
+      </div>
+      <div class="dbc">
+        <div class="dbc-img"><img src="images/nerve-damage.png" alt="Illustration of interconnected neurons with glowing synaptic connections"/></div>
+        <span class="dbc-icon" aria-hidden="true"></span>
+        <span class="dbc-n">Complication 04</span>
+        <div class="dbc-t">Nerve Damage</div>
+        <div class="dbc-d">Tingling, numbness, or burning pain usually starting in hands and feet. Severe cases cause complete loss of sensation, dramatically raising the risk of undetected injury.</div>
+      </div>
+      <div class="dbc">
+        <div class="dbc-img"><img src="images/cognitive-decline.png" alt="Anatomical rendering of a human brain inside a transparent skull"/></div>
+        <span class="dbc-icon" aria-hidden="true"></span>
+        <span class="dbc-n">Complication 05</span>
+        <div class="dbc-t">Cognitive Decline</div>
+        <div class="dbc-d">Long-term poor glycaemic control is linked to accelerated cognitive decline and increased dementia risk — effects that appear even in young adults with persistent hyperglycaemia.</div>
+      </div>
+      <div class="dbc">
+        <div class="dbc-img"><img src="images/foot-damage.png" alt="Anatomical diagram of the foot showing bones, tendons, and soft tissue"/></div>
+        <span class="dbc-icon" aria-hidden="true"></span>
+        <span class="dbc-n">Complication 06</span>
+        <div class="dbc-t">Foot Damage & Amputation</div>
+        <div class="dbc-d">Combined nerve damage and poor circulation cause ulcers that heal slowly. Diabetes causes the majority of non-traumatic lower limb amputations performed worldwide every year.</div>
+      </div>
+    </div>
+    <div class="dka-callout has-img rv" style="margin-top:18px">
+      <div class="dka-icon" aria-hidden="true"></div>
+      <div>
+        <div class="dka-h">Acute Emergency: Diabetic Ketoacidosis (DKA)</div>
+        <div class="dka-p">When the body lacks insulin, it burns fat for energy — producing ketones that dangerously acidify the blood. DKA is a life-threatening emergency requiring immediate hospitalisation. Symptoms: extreme thirst, vomiting, abdominal pain, confusion, and fruity-smelling breath. Poor adherence is a leading trigger.</div>
+        <div class="dka-cite">Sources: <a href="https://www.who.int/news-room/fact-sheets/detail/diabetes" target="_blank" rel="noopener noreferrer">WHO — Diabetes Fact Sheet</a> · <a href="https://www.idf.org/our-activities/diabetes-education/diabetes-complications.html" target="_blank" rel="noopener noreferrer">IDF — Diabetes Complications</a></div>
+      </div>
+      <div class="dka-img">
+        <img src="images/dka-symptoms.jpg" alt="Infographic showing signs and symptoms of diabetic ketoacidosis including confusion, fruity breath, difficulty breathing, vomiting, exhaustion, flushed skin, extreme thirst, abdominal pain, nausea, and excessive urination"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IMPORTANCE (LIGHT) -->
+<div class="light" id="importance" aria-labelledby="imp-h">
+  <div class="section">
+    <div class="sec-head rv">
+      <span class="overline">The Core Case</span>
+      <h2 id="imp-h">Why Adherence <i>Changes Everything</i></h2>
+      <p>Consistent medication is not optional for diabetes — it is the foundation every other health outcome rests on.</p>
+    </div>
+    <div class="bento-grid">
+      <div class="bc bc-6 bc-soft rv">
+        <div class="bc-icon bci-4">01</div>
+        <span class="bc-ol">Reason 01</span>
+        <div class="bc-t">Maintains normal blood glucose</div>
+        <div class="bc-desc">Consistent medication keeps levels stable in your bloodstream, preventing hypoglycaemia (dangerous lows causing dizziness and confusion) and chronic hyperglycaemia (damaging highs that destroy blood vessels and organs over time).</div>
+      </div>
+      <div class="bc bc-6 bc-white rv rv-d1">
+        <div class="bc-icon bci-1">02</div>
+        <span class="bc-ol">Reason 02</span>
+        <div class="bc-t">Protects every blood vessel</div>
+        <div class="bc-desc">Microvascular complications begin with weakened, leaking blood vessels. Adherence prevents this damage — protecting your eyes, kidneys, and nerves before irreversible harm occurs. Prevention is always better than treatment.</div>
+      </div>
+      <div class="bc bc-4 bc-grad rv rv-d2">
+        <div class="bc-icon" style="background:rgba(255,255,255,.18);color:#fff">03</div>
+        <span class="bc-ol" style="color:rgba(255,255,255,.65)">Reason 03</span>
+        <div class="bc-t" style="color:#fff">Prevents emergencies</div>
+        <div class="bc-desc" style="color:rgba(255,255,255,.82)">Poor adherence triggers sudden crises like DKA or Hyperosmolar Hyperglycaemic State — both life-threatening. Staying on track prevents these entirely.</div>
+      </div>
+      <div class="bc bc-4 bc-soft rv rv-d3">
+        <div class="bc-icon bci-3">04</div>
+        <span class="bc-ol">Reason 04</span>
+        <div class="bc-t">Saves money long-term</div>
+        <div class="bc-desc">The cost of treating complications — dialysis, eye surgery, amputations — far exceeds the cost of consistent medication. Adherence today is the most cost-effective health investment you can make.</div>
+      </div>
+      <div class="bc bc-4 bc-navy rv">
+        <div class="bc-icon bci-2" style="color:#fff">05</div>
+        <span class="bc-ol">Reason 05</span>
+        <div class="bc-t">Preserves quality of life</div>
+        <div class="bc-desc">Good adherence keeps symptoms manageable so you can study, work, socialise, and exercise without your condition dominating every day. Control your diabetes — don't let it control you.</div>
+      </div>
+      <div class="bc bc-4 bc-soft rv rv-d1">
+        <div class="bc-icon bci-4">06</div>
+        <span class="bc-ol">Reason 06</span>
+        <div class="bc-t">Slows disease progression</div>
+        <div class="bc-desc">Maintaining healthy HbA1c through adherence consistently slows or prevents progression from manageable diabetes to severe complications. The earlier you commit, the greater the long-term dividend.</div>
+      </div>
+      <div class="bc bc-8 bc-image rv rv-d2">
+        <img src="images/adhere.jpeg" alt="Young woman using a blood glucose meter, holding a fresh apple, and organising daily medication — illustrating a consistent diabetes self-care routine"/>
+        <span class="bc-image-cap">Daily Routine</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PATIENTS + BARRIERS (DARK) -->
+<div class="dark-sec" id="patients" aria-labelledby="pat-h">
+  <div class="section">
+    <div class="sec-head rv">
+      <span class="overline">Who This Is For</span>
+      <h2 id="pat-h">Young Adults with <i>Diabetes Mellitus</i></h2>
+      <p>Why this age group faces uniquely difficult challenges — and what makes adherence harder here than anywhere else.</p>
+    </div>
+    <figure class="symp-frame rv">
+      <span class="symp-cap">Know The Signs</span>
+      <img src="images/diabetes-symptoms.jpeg" alt="Infographic showing common diabetes symptoms in a young woman: headache, dizziness, blurry vision, tingling in hands or feet, frequent urination, thirst, hunger, and weight loss"/>
+    </figure>
+    <div class="target-band rv">
+      <span class="target-badge">Ages 15–35 · Students &amp; Young Professionals</span>
+      <h3>Why this age group <i>struggles most</i></h3>
+      <p>Managing diabetes requires major lifestyle adjustments that collide directly with young adulthood — exams, social life, irregular schedules, financial strain, identity formation, and the pressure to fit in. This is the group that most needs support, and most often feels alone in navigating it.</p>
+    </div>
+    <div class="barrier-grid">
+      <div class="bar-card rv">
+        <div class="bar-icon">01</div>
+        <div><div class="bar-t">Cost of Medication</div><div class="bar-d">Many patients can't afford long-term treatment, especially insulin and newer oral drugs. Financial pressure leads to skipped doses, dose reduction, or complete discontinuation — all of which are dangerous.</div></div>
+      </div>
+      <div class="bar-card rv rv-d1">
+        <div class="bar-icon">02</div>
+        <div><div class="bar-t">Poor Health Literacy</div><div class="bar-d">Patients who don't understand their condition may stop medication when symptoms improve — wrongly believing they are cured. Informed patients adhere significantly better than uninformed ones.</div></div>
+      </div>
+      <div class="bar-card rv rv-d2">
+        <div class="bar-icon">03</div>
+        <div><div class="bar-t">Complex Regimens &amp; Busy Schedules</div><div class="bar-d">Multiple medications at different times, exams, travel, and irregular routines all disrupt adherence patterns — particularly for students and young professionals navigating unpredictable days.</div></div>
+      </div>
+      <div class="bar-card rv rv-d3">
+        <div class="bar-icon">04</div>
+        <div><div class="bar-t">Side Effects &amp; Fear of Needles</div><div class="bar-d">Nausea, weight gain, and needle phobia are major deterrents. Psychological resistance to insulin therapy leads to poor glycaemic control and long delays before starting necessary treatment.</div></div>
+      </div>
+      <div class="bar-card rv">
+        <div class="bar-icon">05</div>
+        <div><div class="bar-t">Social &amp; Dietary Pressure</div><div class="bar-d">Peers and family encourage indulgence. Cultural food norms, social events, and the desire to participate without restriction all create real friction for young adults managing dietary guidelines.</div></div>
+      </div>
+      <div class="bar-card rv rv-d1">
+        <div class="bar-icon">06</div>
+        <div><div class="bar-t">Denial &amp; Short-term Thinking</div><div class="bar-d">Without visible consequences today, it's easy to deprioritise medication that protects future health. Some young adults don't fully accept their diagnosis or understand the long-term severity of the illness.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STRATEGIES (DARK) -->
+<div class="dark-sec" id="strategies" aria-labelledby="strat-h">
+  <div class="section" style="padding-top:0">
+    <div class="sec-head rv">
+      <span class="overline">Practical Guidance</span>
+      <h2 id="strat-h">7 Strategies That <i>Actually Work</i></h2>
+      <p>Proven, practical approaches to improving adherence. No perfection required.</p>
+    </div>
+    <div class="strat-list" role="list">
+      <div class="strat-row rv" role="listitem">
+        <div class="strat-num" aria-label="Strategy 1">01</div>
+        <div>
+          <div class="strat-title">Understand your medication</div>
+          <div class="strat-desc">Ask your nurse or doctor what each medication does, how it works, and what happens if you skip it. Patients who understand their treatment adhere significantly better than those who don't.</div>
+          <div class="strat-tip"> Write down your medication names, doses, and timing in your phone — and refer back until it's automatic.</div>
+        </div>
+      </div>
+      <div class="strat-row rv rv-d1" role="listitem">
+        <div class="strat-num" aria-label="Strategy 2">02</div>
+        <div>
+          <div class="strat-title">Set smart, recurring reminders</div>
+          <div class="strat-desc">Set alarms at your exact medication times. Use a dedicated medication reminder app or ask a trusted family member to check in with you daily until the habit is solid.</div>
+          <div class="strat-tip"> <a href="https://www.medisafe.com" target="_blank" rel="noopener noreferrer">Medisafe</a>, Roundhealth, and MyTherapy are all free apps built specifically for this.</div>
+        </div>
+      </div>
+      <div class="strat-row rv rv-d2" role="listitem">
+        <div class="strat-num" aria-label="Strategy 3">03</div>
+        <div>
+          <div class="strat-title">Anchor it to an existing daily habit</div>
+          <div class="strat-desc">Link your medication to something you already do every day — brushing teeth, morning coffee, or going to bed. The stronger the habit anchor, the less conscious effort adherence requires.</div>
+          <div class="strat-tip"> Place your medication next to your toothbrush or coffee maker as a physical cue you can't miss.</div>
+        </div>
+      </div>
+      <div class="strat-row rv" role="listitem">
+        <div class="strat-num" aria-label="Strategy 4">04</div>
+        <div>
+          <div class="strat-title">Address side effects — don't just stop</div>
+          <div class="strat-desc">If you experience side effects, tell your healthcare provider. Never simply stop taking the medication. There are often alternative formulations, dose adjustments, or complementary strategies that resolve the issue.</div>
+          <div class="strat-tip"> Keep a side-effect diary (date, symptom, severity) to share at your next appointment for targeted solutions.</div>
+        </div>
+      </div>
+      <div class="strat-row rv rv-d1" role="listitem">
+        <div class="strat-num" aria-label="Strategy 5">05</div>
+        <div>
+          <div class="strat-title">Never skip — especially on good days</div>
+          <div class="strat-desc">Feeling fine is usually proof the medication is working. Stopping creates dangerous gaps in glucose control and can trigger rapid deterioration. Consistency is the entire point of chronic disease management.</div>
+          <div class="strat-tip"> Missed a dose? Take it as soon as you remember — unless it's near your next dose time. Never double up.</div>
+        </div>
+      </div>
+      <div class="strat-row rv rv-d2" role="listitem">
+        <div class="strat-num" aria-label="Strategy 6">06</div>
+        <div>
+          <div class="strat-title">Refill your prescription early</div>
+          <div class="strat-desc">Running out creates dangerous treatment gaps. Always maintain at least a week's supply as a buffer. Many pharmacies offer automatic refill programmes — ask your pharmacist about enrolling.</div>
+          <div class="strat-tip"> Set a phone reminder when you're down to your last 7 days of supply — before you even think about running out.</div>
+        </div>
+      </div>
+      <div class="strat-row rv" role="listitem">
+        <div class="strat-num" aria-label="Strategy 7">07</div>
+        <div>
+          <div class="strat-title">Build a support network</div>
+          <div class="strat-desc">Talk openly with family and friends about your treatment needs. Emotional support significantly improves long-term adherence. Consider joining a peer diabetes group — the IDF runs programmes specifically for young adults.</div>
+          <div class="strat-tip"> The International Diabetes Federation has young adult peer programmes: <a href="https://www.idf.org" target="_blank" rel="noopener noreferrer">idf.org</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT CONNECTS (dark steps) -->
+<div class="dark-sec">
+  <div class="section" style="padding-top:0">
+    <div class="sec-head rv">
+      <span class="overline">Your Path Forward</span>
+      <h2>The <i>Adherence Journey</i></h2>
+    </div>
+    <div class="steps-grid rv">
+      <div class="step"><div class="step-n">1</div><h4>Understand</h4><p>Learn what your medication does and why it matters long-term — not just day-to-day</p></div>
+      <div class="step"><div class="step-n">2</div><h4>Organise</h4><p>Set reminders, anchor habits, and build your daily routine around consistent dosing</p></div>
+      <div class="step"><div class="step-n">3</div><h4>Communicate</h4><p>Talk openly with your doctor about side effects, costs, and barriers without fear of judgment</p></div>
+      <div class="step"><div class="step-n">4</div><h4>Stay Consistent</h4><p>Track adherence, refill early, and build your support network to maintain momentum for life</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ (dark) -->
+<div class="dark-sec" id="quiz" aria-labelledby="quiz-h">
+  <div class="section" style="padding-top:0">
+    <div class="sec-head rv">
+      <span class="overline">Test Your Knowledge</span>
+      <h2 id="quiz-h">Quick <i>Knowledge Check</i></h2>
+      <p>5 questions. No pressure. See how much you've absorbed.</p>
+    </div>
+    <div class="quiz-card rv rv-d1">
+      <div class="quiz-bar" role="progressbar" aria-label="Quiz progress" id="qbar-el" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        <div class="quiz-bar-fill" id="qbar"></div>
+      </div>
+      <div class="quiz-q" id="qq" role="status" aria-live="polite"></div>
+      <div class="quiz-opts" id="qopts" role="group" aria-labelledby="qq"></div>
+      <div class="quiz-fb" id="qfb" role="alert" aria-live="assertive"></div>
+      <div class="quiz-bot">
+        <span class="quiz-prog" id="qprog">Question 1 of 5</span>
+        <button class="quiz-nxt" id="qnxt" onclick="nextQ()" aria-label="Next question">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESOURCES (LIGHT) -->
+<div class="g-bridge" style="background:linear-gradient(180deg,var(--dark) 0%,#F6FAFF 100%)" aria-hidden="true"></div>
+<div class="light" id="resources" aria-labelledby="res-h">
+  <div class="section">
+    <div class="sec-head rv">
+      <span class="overline">Credible Sources</span>
+      <h2 id="res-h">Trusted <i>References</i></h2>
+      <p>All content is drawn from internationally recognised health authorities and peer-reviewed sources.</p>
+    </div>
+    <div class="res-grid">
+      <a href="https://www.who.int/news-room/fact-sheets/detail/diabetes" target="_blank" rel="noopener noreferrer" class="res-card rv" aria-label="World Health Organization Diabetes Fact Sheet (opens in new tab)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/World_Health_Organization_Logo.svg/1200px-World_Health_Organization_Logo.svg.png" alt="World Health Organization logo" class="res-img"/>
+        <span class="res-org">WHO</span>
+        <div class="res-title">Diabetes Fact Sheet</div>
+        <div class="res-desc">The WHO's global overview of diabetes — types, statistics, prevention strategies, and worldwide disease burden.</div>
+        <span class="res-link" aria-hidden="true">Visit WHO</span>
+      </a>
+      <a href="https://www.idf.org/our-activities/diabetes-education/diabetes-complications.html" target="_blank" rel="noopener noreferrer" class="res-card rv rv-d1" aria-label="IDF Diabetes Complications Guide (opens in new tab)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/IDF_logo.png/800px-IDF_logo.png" alt="International Diabetes Federation logo" class="res-img"/>
+        <span class="res-org">IDF</span>
+        <div class="res-title">Diabetes Complications</div>
+        <div class="res-desc">The International Diabetes Federation's comprehensive guide to preventing short and long-term complications.</div>
+        <span class="res-link" aria-hidden="true">Visit IDF</span>
+      </a>
+      <a href="https://www.diabetes.org/diabetes" target="_blank" rel="noopener noreferrer" class="res-card rv rv-d2" aria-label="American Diabetes Association overview (opens in new tab)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/American_Diabetes_Association_logo.svg/1200px-American_Diabetes_Association_logo.svg.png" alt="American Diabetes Association logo" class="res-img"/>
+        <span class="res-org">ADA</span>
+        <div class="res-title">Understanding Diabetes</div>
+        <div class="res-desc">Patient-focused guides on diabetes types, treatment, medication, nutrition, and daily management from the ADA.</div>
+        <span class="res-link" aria-hidden="true">Visit ADA</span>
+      </a>
+      <a href="https://www.niddk.nih.gov/health-information/diabetes" target="_blank" rel="noopener noreferrer" class="res-card rv rv-d3" aria-label="NIDDK NIH Diabetes Health Information (opens in new tab)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/NIH_2013_logo_vertical.png/800px-NIH_2013_logo_vertical.png" alt="National Institutes of Health logo" class="res-img"/>
+        <span class="res-org">NIDDK / NIH</span>
+        <div class="res-title">Diabetes Health Information</div>
+        <div class="res-desc">Evidence-based resources on causes, symptoms, treatment, and medication adherence strategies from the NIH.</div>
+        <span class="res-link" aria-hidden="true">Visit NIDDK</span>
+      </a>
+      <a href="https://www.mayoclinic.org/diseases-conditions/diabetes/symptoms-causes/syc-20371444" target="_blank" rel="noopener noreferrer" class="res-card rv" aria-label="Mayo Clinic Diabetes overview (opens in new tab)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Mayo_Clinic_logo.svg/1200px-Mayo_Clinic_logo.svg.png" alt="Mayo Clinic logo" class="res-img"/>
+        <span class="res-org">Mayo Clinic</span>
+        <div class="res-title">Symptoms &amp; Causes</div>
+        <div class="res-desc">Clinically reviewed overview of diabetes symptoms, causes, risk factors, and best-practice management from Mayo Clinic.</div>
+        <span class="res-link" aria-hidden="true">Visit Mayo Clinic</span>
+      </a>
+      <a href="https://www.cdc.gov/diabetes/basics/index.html" target="_blank" rel="noopener noreferrer" class="res-card rv rv-d1" aria-label="CDC Diabetes Basics (opens in new tab)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/US_CDC_logo.svg/1200px-US_CDC_logo.svg.png" alt="Centers for Disease Control and Prevention logo" class="res-img"/>
+        <span class="res-org">CDC</span>
+        <div class="res-title">Diabetes Basics</div>
+        <div class="res-desc">Public health resources on prevention, management, medication adherence, and complication prevention from the CDC.</div>
+        <span class="res-link" aria-hidden="true">Visit CDC</span>
+      </a>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box rv" style="margin-top:52px">
+      <h2>Start <i>one thing</i> today.</h2>
+      <p>Medication adherence isn't about perfection — it's about consistency. Pick one strategy from this site and commit to it this week.</p>
+      <a href="#strategies" class="btn btn-primary" aria-label="See all 7 strategies">
+        See All 7 Strategies
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- GROUP CREDITS -->
+<section class="group-credits" aria-label="Project contributors">
+  <div class="group-credits-inner">
+    <p class="group-credits-label">✦ This project was brought to life by</p>
+    <h2 class="group-credits-title">Our <i>Team</i></h2>
+    <div class="group-credits-grid">
+      <div class="group-member">
+        <span class="member-name">Glory .I. Adeyemi</span>
+        <span class="member-id">202300713</span>
+      </div>
+      <div class="group-member">
+        <span class="member-name">Katlego Molefe</span>
+        <span class="member-id">202200392</span>
+      </div>
+      <div class="group-member">
+        <span class="member-name">Lone A. Dipholo</span>
+        <span class="member-id">202304723</span>
+      </div>
+      <div class="group-member">
+        <span class="member-name">Prince Atang Motswadi</span>
+        <span class="member-id">202206493</span>
+      </div>
+      <div class="group-member">
+        <span class="member-name">Kutlwano Selwe</span>
+        <span class="member-id">202200594</span>
+      </div>
+      <div class="group-member">
+        <span class="member-name">Sherifat Koroma</span>
+        <span class="member-id">202300041</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" role="contentinfo">
+  <div class="footer-brand">
+    <h4>
+      <div style="width:30px;height:30px;border-radius:9px;background:var(--g1);display:flex;align-items:center;justify-content:center;font-size:.9rem" aria-hidden="true">💊</div>
+      AdhereMed
+    </h4>
+    <p>Empowering young adults with diabetes to manage their health through consistent medication adherence and genuine understanding of their condition.</p>
+  </div>
+  <div class="footer-col">
+    <h5>Learn</h5>
+    <ul>
+      <li><a href="#about">About Diabetes</a></li>
+      <li><a href="#types">Types</a></li>
+      <li><a href="#complications">Complications</a></li>
+      <li><a href="#importance">Why Adherence</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h5>For You</h5>
+    <ul>
+      <li><a href="#patients">Young Adults</a></li>
+      <li><a href="#patients">Barriers</a></li>
+      <li><a href="#strategies">7 Strategies</a></li>
+      <li><a href="#quiz">Knowledge Quiz</a></li>
+    </ul>
+  </div>
+
+<!-- TOGGLES -->
+<button class="theme-tgl" id="themeBtn" aria-label="Toggle light or dark theme" title="Toggle theme">🌙</button>
+
+<script>
+  // ── CURSOR GLOW ──
+  const glow = document.getElementById('glow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+
+  // ── TYPING EFFECT ──
+  function typeInto(el, words, speed=80, pause=1800) {
+    let wi=0, ci=0, deleting=false;
+    function tick(){
+      const word = words[wi];
+      if(!deleting){ el.textContent = word.slice(0,ci+1); ci++; if(ci===word.length){ deleting=true; setTimeout(tick, pause); return; } }
+      else { el.textContent = word.slice(0,ci-1); ci--; if(ci===0){ deleting=false; wi=(wi+1)%words.length; } }
+      setTimeout(tick, deleting ? speed/2 : speed);
+    }
+    tick();
+  }
+  // start typing after hero animation settles
+  setTimeout(()=>{ typeInto(document.getElementById('typed-hero'), ['Consistent.','Healthy.','On Track.','In Control.','Consistent.'], 90, 2000); }, 1200);
+
+  // ── DNA HELIX CANVAS ──
+  const dc=document.getElementById('dna-canvas'),dx=dc.getContext('2d');
+  function rzD(){dc.width=innerWidth;dc.height=innerHeight}rzD();addEventListener('resize',rzD);
+  let t=0;
+  function drawDNA(){
+    dx.clearRect(0,0,dc.width,dc.height);
+    const isLight = document.documentElement.getAttribute('data-theme')==='light';
+    const colA = isLight ? '14,165,233' : '14,165,233';
+    const colB = isLight ? '13,148,136' : '20,184,166';
+    const alphaBoost = isLight ? 2.8 : 1;
+    const cx=dc.width/2,pts=28,sp=dc.height/(pts-1);
+    for(let i=0;i<pts;i++){
+      const y=i*sp,ph=t+i*0.3,x1=cx+Math.sin(ph)*130,x2=cx+Math.sin(ph+Math.PI)*130,a=(0.12+Math.abs(Math.sin(ph))*0.12)*alphaBoost;
+      dx.beginPath();dx.moveTo(x1,y);dx.lineTo(x2,y);dx.strokeStyle=`rgba(${colA},${Math.min(a*0.5,1)})`;dx.lineWidth=isLight?2:1.5;dx.stroke();
+      dx.beginPath();dx.arc(x1,y,isLight?4.5:3.5+Math.abs(Math.sin(ph))*2,0,Math.PI*2);dx.fillStyle=`rgba(${colA},${Math.min(a,1)})`;dx.fill();
+      dx.beginPath();dx.arc(x2,y,isLight?4.5:3.5+Math.abs(Math.cos(ph))*2,0,Math.PI*2);dx.fillStyle=`rgba(${colB},${Math.min(a,1)})`;dx.fill();
+    }
+    t+=0.012;requestAnimationFrame(drawDNA);
+  }
+  drawDNA();
+
+  // ── NAV SCROLL ──
+  addEventListener('scroll', () => document.getElementById('nav').classList.toggle('solid', scrollY > 60));
+
+  // ── MOBILE DRAWER ──
+  function openD(){document.getElementById('drw').classList.add('open');document.getElementById('ovl').classList.add('show');document.getElementById('hbg').setAttribute('aria-expanded','true')}
+  function closeD(){document.getElementById('drw').classList.remove('open');document.getElementById('ovl').classList.remove('show');document.getElementById('hbg').setAttribute('aria-expanded','false')}
+
+  // ── REVEAL ──
+  const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('show'); }), {threshold:.1});
+  document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+  // ── THEME TOGGLE ──
+  let dark = true;
+  document.getElementById('themeBtn').addEventListener('click', () => {
+    dark = !dark;
+    document.documentElement.setAttribute('data-theme', dark?'dark':'light');
+    document.getElementById('themeBtn').textContent = dark?'🌙':'☀️';
+    document.getElementById('themeBtn').setAttribute('aria-label', dark?'Switch to light theme':'Switch to dark theme');
+  });
+  // start dark
+  document.documentElement.setAttribute('data-theme','dark');
+
+  // ── QUIZ ──
+  const QS=[
+    {q:"What does medication adherence mean in diabetes care?",opts:["Only taking medication when feeling sick","Taking prescribed meds at the right time, dose, and for the full recommended duration","Taking medication on weekdays only","Reducing your dose when blood sugar feels normal"],a:1,e:"Correct! Adherence means consistently taking medication as prescribed — right time, right dose, right duration — even when you feel well."},
+    {q:"Which complication results from blood vessel damage in the retina due to uncontrolled diabetes?",opts:["Nephropathy","Neuropathy","Retinopathy","Cardiomyopathy"],a:2,e:"Retinopathy damages the retina's blood vessels, causing blurred vision and potentially permanent blindness. It's a leading cause of preventable blindness worldwide."},
+    {q:"A young adult stops insulin because they feel fine. What is most likely to happen?",opts:["Their diabetes permanently improves","Nothing — feeling fine means the disease is gone","Blood glucose rises, increasing risk of DKA and long-term complications","They'll need less medication in future"],a:2,e:"Feeling fine often means the medication is working. Stopping allows blood glucose to rise dangerously — DKA can develop rapidly without insulin."},
+    {q:"Which strategy is most evidence-backed for improving adherence?",opts:["Only taking meds during hospital visits","Linking medication to an existing daily habit like brushing teeth","Halving the dose to make it last longer","Skipping weekends to give the body a break"],a:1,e:"Habit anchoring — pairing medication with an existing routine — is one of the most consistently proven adherence strategies in chronic disease management."},
+    {q:"Type 1 diabetes is caused by which underlying process?",opts:["Eating too much sugar during childhood","The immune system attacking insulin-producing cells in the pancreas","Insufficient exercise and poor lifestyle","Pregnancy-related hormonal changes"],a:1,e:"Type 1 is an autoimmune disease — the immune system mistakenly destroys pancreatic beta cells. It is not caused by diet or lifestyle choices."}
+  ];
+  let qi=0,answered=false;
+  function renderQ(){
+    const q=QS[qi];
+    document.getElementById('qq').textContent=q.q;
+    document.getElementById('qprog').textContent='Question '+(qi+1)+' of '+QS.length;
+    document.getElementById('qbar').style.width=(qi/QS.length*100)+'%';
+    document.getElementById('qbar-el').setAttribute('aria-valuenow',Math.round(qi/QS.length*100));
+    document.getElementById('qfb').className='quiz-fb';
+    document.getElementById('qnxt').className='quiz-nxt';
+    answered=false;
+    const el=document.getElementById('qopts');
+    el.innerHTML='';
+    q.opts.forEach((o,i)=>{
+      const b=document.createElement('button');
+      b.className='qo';b.textContent=o;b.setAttribute('aria-label','Option '+(i+1)+': '+o);
+      b.onclick=()=>checkA(i);
+      el.appendChild(b);
+    });
+  }
+  function checkA(i){
+    if(answered)return; answered=true;
+    const q=QS[qi],ok=i===q.a;
+    document.querySelectorAll('.qo').forEach(b=>b.disabled=true);
+    document.querySelectorAll('.qo')[q.a].classList.add('ok');
+    if(!ok)document.querySelectorAll('.qo')[i].classList.add('no');
+    const fb=document.getElementById('qfb');
+    fb.textContent=(ok?'✅ ':'❌ Incorrect. ')+q.e;
+    fb.className='quiz-fb show '+(ok?'ok':'no');
+    document.getElementById('qnxt').className='quiz-nxt show';
+  }
+  function nextQ(){
+    qi++;
+    if(qi<QS.length){renderQ();}
+    else{
+      document.getElementById('qbar').style.width='100%';
+      document.querySelector('.quiz-card').innerHTML=`<div style="text-align:center;padding:16px 0"><div style="font-size:3.5rem;margin-bottom:18px">🎉</div><div style="font-family:var(--serif);font-size:1.9rem;font-weight:600;color:#fff;margin-bottom:10px">Quiz Complete!</div><p style="color:rgba(255,255,255,.45);line-height:1.8;max-width:380px;margin:0 auto 26px;font-weight:300">Well done. Share AdhereMed with a friend who has diabetes — it could make a real difference to their health.</p><button onclick="location.reload()" class="btn btn-primary" style="cursor:pointer">Restart Quiz <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>`;
+    }
+  }
+  // ── VIDEO CAROUSEL ──
+  let vidIdx = 0;
+  const vidTotal = 3;
+
+  function goVid(n) {
+    // hide current
+    document.getElementById('vslide-' + vidIdx).classList.remove('active');
+    document.getElementById('dot' + vidIdx).classList.remove('active');
+    // stop any playing iframe by resetting the box (removes iframe)
+    const prevBox = document.getElementById('vbox-' + vidIdx);
+    const prevIframe = prevBox.querySelector('.vid-iframe-live');
+    if (prevIframe) {
+      const thumb = document.getElementById('vthumb-' + vidIdx);
+      if (thumb) thumb.style.display = 'flex';
+      prevIframe.remove();
+    }
+    vidIdx = (n + vidTotal) % vidTotal;
+    document.getElementById('vslide-' + vidIdx).classList.add('active');
+    document.getElementById('dot' + vidIdx).classList.add('active');
+  }
+
+  function playVid(idx, videoId) {
+    const thumb = document.getElementById('vthumb-' + idx);
+    const box   = document.getElementById('vbox-' + idx);
+    // inject real iframe
+    const iframe = document.createElement('iframe');
+    iframe.className = 'vid-iframe-live';
+    iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    iframe.title = 'YouTube video player';
+    box.appendChild(iframe);
+    thumb.style.display = 'none';
+  }
+
+  document.getElementById('vidPrev').addEventListener('click', () => goVid(vidIdx - 1));
+  document.getElementById('vidNext').addEventListener('click', () => goVid(vidIdx + 1));
+
+</script>
+</body>
+</html>
