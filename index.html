@@ -328,8 +328,15 @@
     .footer-bottom a:hover{color:var(--c1)}
 
     /* ── THEME TOGGLE ── */
-    .theme-tgl{position:fixed;bottom:28px;right:28px;z-index:500;width:50px;height:50px;border-radius:50%;background:var(--dark2);border:1px solid rgba(14,165,233,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;box-shadow:0 0 24px rgba(14,165,233,.1);transition:all .3s}
-    .theme-tgl:hover{transform:scale(1.12) rotate(18deg);border-color:var(--c1);box-shadow:0 0 32px rgba(14,165,233,.22)}
+    .theme-tgl{position:fixed;bottom:28px;right:28px;z-index:500;height:42px;min-width:96px;padding:0 14px;border-radius:999px;background:var(--dark2);border:1px solid rgba(14,165,233,.2);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:600;letter-spacing:.02em;color:rgba(255,255,255,.92);box-shadow:0 0 24px rgba(14,165,233,.1);transition:all .3s;font-family:var(--sans)}
+    .theme-tgl:hover{transform:translateY(-2px);border-color:var(--c1);box-shadow:0 0 32px rgba(14,165,233,.22)}
+
+    /* ── READ ALOUD TOGGLE ── */
+    .readaloud-tgl{position:fixed;bottom:78px;right:28px;z-index:500;height:42px;min-width:96px;padding:0 14px;border-radius:999px;background:var(--dark2);border:1px solid rgba(14,165,233,.2);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:600;letter-spacing:.02em;color:rgba(255,255,255,.92);box-shadow:0 0 24px rgba(14,165,233,.1);transition:all .3s;font-family:var(--sans)}
+    .readaloud-tgl:hover{transform:translateY(-2px);border-color:var(--c1);box-shadow:0 0 32px rgba(14,165,233,.22)}
+
+    [data-theme="light"] .readaloud-tgl{background:#fff;border-color:#E2E8F0;box-shadow:0 2px 12px rgba(14,165,233,0.07)}
+    [data-theme="light"] .theme-tgl{background:#fff;border-color:#E2E8F0;box-shadow:0 2px 12px rgba(14,165,233,0.07);color:#0F2137}
 
     /* ── TYPING EFFECT ── */
     .typed-text{color:#fff;display:inline;-webkit-text-fill-color:#fff}
@@ -1198,7 +1205,8 @@
   </div>
 
 <!-- TOGGLES -->
-<button class="theme-tgl" id="themeBtn" aria-label="Toggle light or dark theme" title="Toggle theme">🌙</button>
+<button class="readaloud-tgl" id="readAloudBtn" aria-label="Read page aloud" aria-pressed="false" title="Read aloud">Read</button>
+<button class="theme-tgl" id="themeBtn" aria-label="Toggle light or dark theme" title="Toggle theme">Light</button>
 
 <script>
   // ── CURSOR GLOW ──
@@ -1259,11 +1267,159 @@
   document.getElementById('themeBtn').addEventListener('click', () => {
     dark = !dark;
     document.documentElement.setAttribute('data-theme', dark?'dark':'light');
-    document.getElementById('themeBtn').textContent = dark?'🌙':'☀️';
+    document.getElementById('themeBtn').textContent = dark?'Light':'Dark';
     document.getElementById('themeBtn').setAttribute('aria-label', dark?'Switch to light theme':'Switch to dark theme');
   });
   // start dark
   document.documentElement.setAttribute('data-theme','dark');
+
+  // ── READ ALOUD (TEXT TO SPEECH) ──
+  const readAloudBtn = document.getElementById('readAloudBtn');
+  let speaking = false;
+  let preferredVoice = null;
+
+  function pickPreferredVoice(lang) {
+    const voices = (window.speechSynthesis && typeof window.speechSynthesis.getVoices === 'function')
+      ? window.speechSynthesis.getVoices()
+      : [];
+    if (!voices || !voices.length) return null;
+
+    const want = (lang || '').toLowerCase();
+    const scored = voices
+      .filter(v => !want || (v.lang || '').toLowerCase().startsWith(want.split('-')[0]))
+      .map(v => {
+        const name = (v.name || '').toLowerCase();
+        let score = 0;
+        if (v.localService) score += 10;
+        if (name.includes('natural') || name.includes('neural')) score += 8;
+        if (name.includes('microsoft') || name.includes('google') || name.includes('edge')) score += 4;
+        if ((v.lang || '').toLowerCase().startsWith(want)) score += 3;
+        return { v, score };
+      })
+      .sort((a,b) => b.score - a.score);
+
+    return scored[0] ? scored[0].v : null;
+  }
+
+  function refreshVoices() {
+    const lang = document.documentElement.lang || 'en-US';
+    preferredVoice = pickPreferredVoice(lang);
+  }
+  if ('speechSynthesis' in window) {
+    refreshVoices();
+    window.speechSynthesis.onvoiceschanged = refreshVoices;
+  }
+
+  function getReadablePageText() {
+    const main = document.querySelector('main');
+    if (!main) return document.body ? document.body.innerText : '';
+
+    // Use visible text from main content only (avoids nav/footer).
+    let t = (main.innerText || '').replace(/\s+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+    return t;
+  }
+
+  function stopReadAloud() {
+    try { window.speechSynthesis.cancel(); } catch {}
+    speaking = false;
+    readAloudBtn.textContent = 'Read';
+    readAloudBtn.setAttribute('aria-pressed', 'false');
+    readAloudBtn.setAttribute('aria-label', 'Read page aloud');
+  }
+
+  function chunkForSpeech(text, maxLen = 260) {
+    const cleaned = (text || '')
+      .replace(/[ \t]+/g, ' ')
+      .replace(/\s+\n/g, '\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .replace(/\s*•\s*/g, '. ')
+      .trim();
+    if (!cleaned) return [];
+
+    // Split by paragraph first, then by sentence-ish punctuation.
+    const paras = cleaned.split(/\n{2,}/g).map(s => s.trim()).filter(Boolean);
+    const chunks = [];
+    for (const p of paras) {
+      const parts = p.split(/(?<=[.!?])\s+/g).map(s => s.trim()).filter(Boolean);
+      let buf = '';
+      for (const part of parts) {
+        const s = part.endsWith('.') || part.endsWith('!') || part.endsWith('?') ? part : (part + '.');
+        if (!buf) buf = s;
+        else if ((buf + ' ' + s).length <= maxLen) buf = buf + ' ' + s;
+        else { chunks.push(buf); buf = s; }
+      }
+      if (buf) chunks.push(buf);
+      // Add a short pause between paragraphs.
+      chunks.push('__PAUSE__');
+    }
+    // Trim trailing pause.
+    while (chunks.length && chunks[chunks.length - 1] === '__PAUSE__') chunks.pop();
+    return chunks;
+  }
+
+  function speakChunksSequentially(chunks) {
+    if (!chunks.length) return;
+    let idx = 0;
+    const lang = document.documentElement.lang || 'en-US';
+
+    const speakNext = () => {
+      if (!speaking) return;
+      if (idx >= chunks.length) { stopReadAloud(); return; }
+
+      const piece = chunks[idx++];
+      if (piece === '__PAUSE__') {
+        // Natural pause between paragraphs.
+        setTimeout(speakNext, 260);
+        return;
+      }
+
+      const u = new SpeechSynthesisUtterance(piece);
+      u.lang = lang;
+      if (preferredVoice) u.voice = preferredVoice;
+      u.rate = 0.98;
+      u.pitch = 1.02;
+      u.volume = 1;
+
+      u.onend = speakNext;
+      u.onerror = stopReadAloud;
+      window.speechSynthesis.speak(u);
+    };
+
+    speakNext();
+  }
+
+  function startReadAloud() {
+    if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
+      return;
+    }
+    const text = getReadablePageText();
+    if (!text) return;
+
+    // Ensure we don't overlap with any previous speech.
+    window.speechSynthesis.cancel();
+
+    speaking = true;
+    readAloudBtn.textContent = 'Stop';
+    readAloudBtn.setAttribute('aria-pressed', 'true');
+    readAloudBtn.setAttribute('aria-label', 'Stop reading aloud');
+
+    const chunks = chunkForSpeech(text, 260);
+    speakChunksSequentially(chunks);
+  }
+
+  readAloudBtn.addEventListener('click', () => {
+    if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
+      alert('Sorry — your browser does not support read aloud on this page.');
+      return;
+    }
+    if (speaking || window.speechSynthesis.speaking) stopReadAloud();
+    else startReadAloud();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopReadAloud();
+  });
+  window.addEventListener('beforeunload', stopReadAloud);
 
   // ── QUIZ ──
   const QS=[
@@ -1304,7 +1460,7 @@
     document.querySelectorAll('.qo')[q.a].classList.add('ok');
     if(!ok)document.querySelectorAll('.qo')[i].classList.add('no');
     const fb=document.getElementById('qfb');
-    fb.textContent=(ok?' ':' Incorrect. ')+q.e;
+    fb.textContent=(ok?'✅ ':'❌ Incorrect. ')+q.e;
     fb.className='quiz-fb show '+(ok?'ok':'no');
     document.getElementById('qnxt').className='quiz-nxt show';
   }
