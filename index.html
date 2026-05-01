@@ -18,6 +18,9 @@
     .vid-card:hover{transform:translateY(-4px);box-shadow:0 24px 64px rgba(14,165,233,.2)}
     .vid-thumb-wrap{position:relative;width:100%;padding-top:56.25%;overflow:hidden;background:#0a1628}
     .vid-thumb-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s ease;display:block}
+    .vid-embed{position:absolute;inset:0;display:none;background:#000}
+    .vid-embed.show{display:block}
+    .vid-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
     .vid-card:hover .vid-thumb-wrap img{transform:scale(1.04)}
     .vid-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,13,26,.7) 0%,rgba(5,13,26,.2) 60%,transparent 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:background .3s}
     .vid-card:hover .vid-overlay{background:linear-gradient(0deg,rgba(5,13,26,.8) 0%,rgba(14,165,233,.15) 60%,transparent 100%)}
@@ -721,14 +724,15 @@
         <div class="vid-stage">
           <!-- SLIDE 1 -->
           <div class="vid-slide active" id="vslide-0">
-            <a class="vid-card" href="https://www.youtube.com/watch?v=3FzuTWCj9gE" target="_blank" rel="noopener noreferrer" aria-label="Watch video 1 on YouTube">
+            <a class="vid-card" href="#" onclick="openVid(this,'3FzuTWCj9gE');return false;" aria-label="Play video 1">
               <div class="vid-thumb-wrap">
                 <img src="https://img.youtube.com/vi/3FzuTWCj9gE/hqdefault.jpg" alt="Video 1 thumbnail"/>
+                <div class="vid-embed" aria-hidden="true"><iframe title="YouTube video player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
                 <div class="vid-overlay">
                   <div class="vid-play-btn">
                     <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
                   </div>
-                  <span class="vid-watch-label">Watch on YouTube ↗</span>
+                  <span class="vid-watch-label">Play</span>
                 </div>
               </div>
               <div class="vid-caption">
@@ -740,14 +744,15 @@
 
           <!-- SLIDE 2 -->
           <div class="vid-slide" id="vslide-1">
-            <a class="vid-card" href="https://www.youtube.com/watch?v=zOJaqMcZe9U" target="_blank" rel="noopener noreferrer" aria-label="Watch video 2 on YouTube">
+            <a class="vid-card" href="#" onclick="openVid(this,'zOJaqMcZe9U');return false;" aria-label="Play video 2">
               <div class="vid-thumb-wrap">
                 <img src="https://img.youtube.com/vi/zOJaqMcZe9U/hqdefault.jpg" alt="Video 2 thumbnail"/>
+                <div class="vid-embed" aria-hidden="true"><iframe title="YouTube video player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
                 <div class="vid-overlay">
                   <div class="vid-play-btn">
                     <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
                   </div>
-                  <span class="vid-watch-label">Watch on YouTube ↗</span>
+                  <span class="vid-watch-label">Play</span>
                 </div>
               </div>
               <div class="vid-caption">
@@ -759,14 +764,15 @@
 
           <!-- SLIDE 3 -->
           <div class="vid-slide" id="vslide-2">
-            <a class="vid-card" href="https://www.youtube.com/watch?v=scqr241O9mc" target="_blank" rel="noopener noreferrer" aria-label="Watch video 3 on YouTube">
+            <a class="vid-card" href="#" onclick="openVid(this,'scqr241O9mc');return false;" aria-label="Play video 3">
               <div class="vid-thumb-wrap">
                 <img src="https://img.youtube.com/vi/scqr241O9mc/hqdefault.jpg" alt="Video 3 thumbnail"/>
+                <div class="vid-embed" aria-hidden="true"><iframe title="YouTube video player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
                 <div class="vid-overlay">
                   <div class="vid-play-btn">
                     <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
                   </div>
-                  <span class="vid-watch-label">Watch on YouTube ↗</span>
+                  <span class="vid-watch-label">Play</span>
                 </div>
               </div>
               <div class="vid-caption">
@@ -1311,11 +1317,19 @@
   }
 
   function getReadablePageText() {
-    const main = document.querySelector('main');
-    if (!main) return document.body ? document.body.innerText : '';
+    // Read through to the end of the page (main + team + footer),
+    // but avoid nav/menu UI and floating buttons.
+    const parts = [
+      document.querySelector('main'),
+      document.querySelector('.group-credits'),
+      document.querySelector('footer')
+    ].filter(Boolean);
 
-    // Use visible text from main content only (avoids nav/footer).
-    let t = (main.innerText || '').replace(/\s+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+    const combined = parts.map(el => (el.innerText || '').trim()).filter(Boolean).join('\n\n');
+    const fallback = document.body ? (document.body.innerText || '') : '';
+    const raw = (combined || fallback);
+
+    let t = raw.replace(/\s+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
     return t;
   }
 
@@ -1484,6 +1498,30 @@
   }
   document.getElementById('vidPrev').addEventListener('click', () => goVid(vidIdx - 1));
   document.getElementById('vidNext').addEventListener('click', () => goVid(vidIdx + 1));
+
+  // ── INLINE YOUTUBE PLAYER (same size as thumbnail) ──
+  function stopAllInlineVideos() {
+    document.querySelectorAll('.vid-embed').forEach(w => w.classList.remove('show'));
+    document.querySelectorAll('.vid-embed iframe').forEach(f => { f.src = ''; });
+    document.querySelectorAll('.vid-overlay').forEach(o => o.style.display = '');
+    document.querySelectorAll('.vid-thumb-wrap img').forEach(i => i.style.visibility = '');
+  }
+  function openVid(anchorEl, id) {
+    // Stop read-aloud so audio doesn't overlap.
+    try { if (typeof stopReadAloud === 'function') stopReadAloud(); } catch {}
+    stopAllInlineVideos();
+    const card = anchorEl && anchorEl.closest ? anchorEl.closest('.vid-card') : null;
+    const wrap = card ? card.querySelector('.vid-thumb-wrap') : null;
+    const embed = wrap ? wrap.querySelector('.vid-embed') : null;
+    const iframe = embed ? embed.querySelector('iframe') : null;
+    const overlay = wrap ? wrap.querySelector('.vid-overlay') : null;
+    const img = wrap ? wrap.querySelector('img') : null;
+    if (!embed || !iframe) return;
+    if (overlay) overlay.style.display = 'none';
+    if (img) img.style.visibility = 'hidden';
+    embed.classList.add('show');
+    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+  }
 
   renderQ();
 </script>
