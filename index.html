@@ -1091,42 +1091,42 @@
     </div>
     <div class="res-grid">
       <a href="https://www.who.int/news-room/fact-sheets/detail/diabetes" target="_blank" rel="noopener noreferrer" class="res-card rv" aria-label="World Health Organization Diabetes Fact Sheet (opens in new tab)">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/World_Health_Organization_Logo.svg/1200px-World_Health_Organization_Logo.svg.png" alt="World Health Organization logo" class="res-img"/>
+        <img src="images/logo-who.svg" alt="World Health Organization logo" class="res-img"/>
         <span class="res-org">WHO</span>
         <div class="res-title">Diabetes Fact Sheet</div>
         <div class="res-desc">The WHO's global overview of diabetes — types, statistics, prevention strategies, and worldwide disease burden.</div>
         <span class="res-link" aria-hidden="true">Visit WHO</span>
       </a>
       <a href="https://www.idf.org/our-activities/diabetes-education/diabetes-complications.html" target="_blank" rel="noopener noreferrer" class="res-card rv rv-d1" aria-label="IDF Diabetes Complications Guide (opens in new tab)">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/IDF_logo.png/800px-IDF_logo.png" alt="International Diabetes Federation logo" class="res-img"/>
+        <img src="images/logo-idf.svg" alt="International Diabetes Federation logo" class="res-img"/>
         <span class="res-org">IDF</span>
         <div class="res-title">Diabetes Complications</div>
         <div class="res-desc">The International Diabetes Federation's comprehensive guide to preventing short and long-term complications.</div>
         <span class="res-link" aria-hidden="true">Visit IDF</span>
       </a>
       <a href="https://www.diabetes.org/diabetes" target="_blank" rel="noopener noreferrer" class="res-card rv rv-d2" aria-label="American Diabetes Association overview (opens in new tab)">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/American_Diabetes_Association_logo.svg/1200px-American_Diabetes_Association_logo.svg.png" alt="American Diabetes Association logo" class="res-img"/>
+        <img src="images/logo-ada.svg" alt="American Diabetes Association logo" class="res-img"/>
         <span class="res-org">ADA</span>
         <div class="res-title">Understanding Diabetes</div>
         <div class="res-desc">Patient-focused guides on diabetes types, treatment, medication, nutrition, and daily management from the ADA.</div>
         <span class="res-link" aria-hidden="true">Visit ADA</span>
       </a>
       <a href="https://www.niddk.nih.gov/health-information/diabetes" target="_blank" rel="noopener noreferrer" class="res-card rv rv-d3" aria-label="NIDDK NIH Diabetes Health Information (opens in new tab)">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/NIH_2013_logo_vertical.png/800px-NIH_2013_logo_vertical.png" alt="National Institutes of Health logo" class="res-img"/>
+        <img src="images/logo-nih.svg" alt="National Institutes of Health logo" class="res-img"/>
         <span class="res-org">NIDDK / NIH</span>
         <div class="res-title">Diabetes Health Information</div>
         <div class="res-desc">Evidence-based resources on causes, symptoms, treatment, and medication adherence strategies from the NIH.</div>
         <span class="res-link" aria-hidden="true">Visit NIDDK</span>
       </a>
       <a href="https://www.mayoclinic.org/diseases-conditions/diabetes/symptoms-causes/syc-20371444" target="_blank" rel="noopener noreferrer" class="res-card rv" aria-label="Mayo Clinic Diabetes overview (opens in new tab)">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Mayo_Clinic_logo.svg/1200px-Mayo_Clinic_logo.svg.png" alt="Mayo Clinic logo" class="res-img"/>
+        <img src="images/logo-mayo.svg" alt="Mayo Clinic logo" class="res-img"/>
         <span class="res-org">Mayo Clinic</span>
         <div class="res-title">Symptoms &amp; Causes</div>
         <div class="res-desc">Clinically reviewed overview of diabetes symptoms, causes, risk factors, and best-practice management from Mayo Clinic.</div>
         <span class="res-link" aria-hidden="true">Visit Mayo Clinic</span>
       </a>
       <a href="https://www.cdc.gov/diabetes/basics/index.html" target="_blank" rel="noopener noreferrer" class="res-card rv rv-d1" aria-label="CDC Diabetes Basics (opens in new tab)">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/US_CDC_logo.svg/1200px-US_CDC_logo.svg.png" alt="Centers for Disease Control and Prevention logo" class="res-img"/>
+        <img src="images/logo-cdc.svg" alt="Centers for Disease Control and Prevention logo" class="res-img"/>
         <span class="res-org">CDC</span>
         <div class="res-title">Diabetes Basics</div>
         <div class="res-desc">Public health resources on prevention, management, medication adherence, and complication prevention from the CDC.</div>
@@ -1341,7 +1341,7 @@
     readAloudBtn.setAttribute('aria-label', 'Read page aloud');
   }
 
-  function chunkForSpeech(text, maxLen = 260) {
+  function chunkForSpeech(text, maxLen = 220) {
     const cleaned = (text || '')
       .replace(/[ \t]+/g, ' ')
       .replace(/\s+\n/g, '\n')
@@ -1354,13 +1354,22 @@
     const paras = cleaned.split(/\n{2,}/g).map(s => s.trim()).filter(Boolean);
     const chunks = [];
     for (const p of paras) {
+      // Sentence split first; if sentences are long, we'll also split on commas later.
       const parts = p.split(/(?<=[.!?])\s+/g).map(s => s.trim()).filter(Boolean);
       let buf = '';
       for (const part of parts) {
-        const s = part.endsWith('.') || part.endsWith('!') || part.endsWith('?') ? part : (part + '.');
-        if (!buf) buf = s;
-        else if ((buf + ' ' + s).length <= maxLen) buf = buf + ' ' + s;
-        else { chunks.push(buf); buf = s; }
+        const fixed = part.endsWith('.') || part.endsWith('!') || part.endsWith('?') ? part : (part + '.');
+        const subParts = (fixed.length > maxLen)
+          ? fixed.split(/,\s+/g).map(s => s.trim()).filter(Boolean)
+          : [fixed];
+
+        for (let sp of subParts) {
+          // Add punctuation for comma-splits so it still flows naturally.
+          if (!/[.!?]$/.test(sp)) sp = sp + ',';
+          if (!buf) buf = sp;
+          else if ((buf + ' ' + sp).length <= maxLen) buf = buf + ' ' + sp;
+          else { chunks.push(buf); buf = sp; }
+        }
       }
       if (buf) chunks.push(buf);
       // Add a short pause between paragraphs.
@@ -1383,18 +1392,19 @@
       const piece = chunks[idx++];
       if (piece === '__PAUSE__') {
         // Natural pause between paragraphs.
-        setTimeout(speakNext, 260);
+        setTimeout(speakNext, 320);
         return;
       }
 
       const u = new SpeechSynthesisUtterance(piece);
       u.lang = lang;
       if (preferredVoice) u.voice = preferredVoice;
-      u.rate = 0.98;
-      u.pitch = 1.02;
+      // Slightly slower, steadier cadence for smoother delivery.
+      u.rate = 0.96;
+      u.pitch = 1.01;
       u.volume = 1;
 
-      u.onend = speakNext;
+      u.onend = () => setTimeout(speakNext, 90);
       u.onerror = stopReadAloud;
       window.speechSynthesis.speak(u);
     };
@@ -1417,7 +1427,7 @@
     readAloudBtn.setAttribute('aria-pressed', 'true');
     readAloudBtn.setAttribute('aria-label', 'Stop reading aloud');
 
-    const chunks = chunkForSpeech(text, 260);
+    const chunks = chunkForSpeech(text, 220);
     speakChunksSequentially(chunks);
   }
 
